@@ -18,7 +18,10 @@
     <h1>Abertura de Chamado para a JKE</h1>
 
 
-    <!-- FORM -->
+    <!-- ======================================== -->
+    <!-- FORMULÁRIO -->
+    <!-- ======================================== -->
+
     <form id="form-chamado">
 
 
@@ -31,57 +34,43 @@
             type="text"
             id="nome"
             name="nome"
-            placeholder="Digite a razão social da empresa"
+            placeholder="Digite a razão social"
             required
         >
 
 
-
-        <!-- ID CONTRATO -->
-        <label for="id_cto">
-            ID do Contrato
-        </label>
-
-        <input
-            type="number"
-            id="id_cto"
-            name="id_cto"
-            placeholder="Digite o ID do contrato"
-            min="1"
-            required
+        <!-- BOTÃO BUSCAR -->
+        <button
+            type="button"
+            id="btn-buscar-empresa"
         >
+            Buscar Empresa
+        </button>
 
 
+        <!-- RESULTADO -->
+        <div id="resultado-empresa"></div>
 
-        <!-- TIPO CONTRATO -->
-        <label for="tipo_cto">
-            Tipo de Contrato
-        </label>
 
-        <select
-            id="tipo_cto"
-            name="tipo_cto"
-            required
-        >
+        <!-- CONTRATOS -->
+        <div id="area-contratos" style="display: none;">
 
-            <option value="">
-                Selecione o tipo de contrato
-            </option>
+            <label for="contrato_select">
+                Contratos ativos
+            </label>
 
-            <option value="SP">
-                Suporte Técnico
-            </option>
+            <select
+                id="contrato_select"
+                required
+            >
 
-            <option value="SI">
-                Suporte de Infraestrutura
-            </option>
+                <option value="">
+                    Selecione um contrato
+                </option>
 
-            <option value="CS">
-                Criação de Software
-            </option>
+            </select>
 
-        </select>
-
+        </div>
 
 
         <!-- TITULO -->
@@ -92,11 +81,9 @@
         <input
             type="text"
             id="titulo"
-            name="titulo"
             placeholder="Ex: Sistema fora do ar"
             required
         >
-
 
 
         <!-- DESCRIÇÃO -->
@@ -106,12 +93,10 @@
 
         <textarea
             id="descricao"
-            name="descricao"
             rows="6"
             placeholder="Descreva o problema detalhadamente"
             required
         ></textarea>
-
 
 
         <!-- PRIORIDADE -->
@@ -121,7 +106,6 @@
 
         <select
             id="prioridade"
-            name="prioridade"
             required
         >
 
@@ -148,29 +132,24 @@
         </select>
 
 
-
         <!-- STATUS -->
         <input
             type="hidden"
             id="status_chamado"
-            name="status_chamado"
             value="ABERTO"
         >
 
 
-
         <!-- DATA -->
         <label for="data_abertura">
-            Data de Abertura
+            Data de abertura
         </label>
 
         <input
             type="datetime-local"
             id="data_abertura"
-            name="data_abertura"
             readonly
         >
-
 
 
         <!-- BOTÕES -->
@@ -189,8 +168,27 @@
     </form>
 
 
+    <!-- ======================================== -->
+    <!-- BOTÃO VOLTAR -->
+    <!-- ======================================== -->
 
+    <div class="container-voltar">
+
+        <button
+            type="button"
+            onclick="window.location.href='index.html'"
+            class="btn-voltar"
+        >
+            Voltar para a tela inicial
+        </button>
+
+    </div>
+
+
+    <!-- ======================================== -->
     <!-- LOGO -->
+    <!-- ======================================== -->
+
     <figure>
 
         <img
@@ -202,110 +200,224 @@
     </figure>
 
 
-
-    <!-- ========================= -->
-    <!-- DATA AUTOMÁTICA -->
-    <!-- ========================= -->
-
-    <script>
-
-        const agora = new Date();
-
-        agora.setMinutes(
-            agora.getMinutes() -
-            agora.getTimezoneOffset()
-        );
-
-        document.getElementById(
-            "data_abertura"
-        ).value = agora
-            .toISOString()
-            .slice(0, 16);
-
-    </script>
-
-
-
-    <!-- ========================= -->
-    <!-- ENVIO PARA BACKEND -->
-    <!-- ========================= -->
+    <!-- ======================================== -->
+    <!-- SCRIPT -->
+    <!-- ======================================== -->
 
     <script>
 
         const formulario =
-            document.getElementById(
-                'form-chamado'
+            document.getElementById('form-chamado');
+
+        const btnBuscarEmpresa =
+            document.getElementById('btn-buscar-empresa');
+
+        const resultadoEmpresa =
+            document.getElementById('resultado-empresa');
+
+        const contratoSelect =
+            document.getElementById('contrato_select');
+
+        const areaContratos =
+            document.getElementById('area-contratos');
+
+
+        // ========================================
+        // DATA AUTOMÁTICA
+        // ========================================
+
+        function atualizarData() {
+
+            const agora = new Date();
+
+            agora.setMinutes(
+                agora.getMinutes() -
+                agora.getTimezoneOffset()
             );
 
+            document.getElementById(
+                'data_abertura'
+            ).value = agora
+                .toISOString()
+                .slice(0, 16);
 
-        formulario.addEventListener(
+        }
 
-            'submit',
-
-            async function (event) {
-
-                // impede reload
-                event.preventDefault();
-
-
-                // =========================
-                // DADOS
-                // =========================
-
-                const dados = {
-
-                    nome:
-                        document.getElementById(
-                            'nome'
-                        ).value,
-
-                    id_cto:
-                        document.getElementById(
-                            'id_cto'
-                        ).value,
-
-                    tipo_cto:
-                        document.getElementById(
-                            'tipo_cto'
-                        ).value,
-
-                    titulo:
-                        document.getElementById(
-                            'titulo'
-                        ).value,
-
-                    descricao:
-                        document.getElementById(
-                            'descricao'
-                        ).value,
-
-                    prioridade:
-                        document.getElementById(
-                            'prioridade'
-                        ).value,
-
-                    status_chamado:
-                        document.getElementById(
-                            'status_chamado'
-                        ).value,
-
-                    data_abertura:
-                        document.getElementById(
-                            'data_abertura'
-                        ).value
-
-                };
+        atualizarData();
 
 
-                // =========================
-                // ENVIA PARA NODE.JS
-                // =========================
+        // ========================================
+        // BUSCAR EMPRESA
+        // ========================================
+
+        btnBuscarEmpresa.addEventListener(
+
+            'click',
+
+            async () => {
+
+                const nome =
+                    document.getElementById('nome').value;
+
+                if (!nome) {
+
+                    alert('Digite o nome da empresa');
+
+                    return;
+
+                }
 
                 try {
 
                     const resposta = await fetch(
 
-                        '/api/chamados/abrir',
+                        `http://localhost:3000/contratos/empresa/${nome}`
+
+                    );
+
+                    if (!resposta.ok) {
+
+                        throw new Error();
+
+                    }
+
+                    const contratos =
+                        await resposta.json();
+
+
+                    if (contratos.length === 0) {
+
+                        resultadoEmpresa.innerHTML = `
+
+                            <p class="erro">
+                                Empresa não encontrada
+                            </p>
+
+                        `;
+
+                        areaContratos.style.display =
+                            'none';
+
+                        return;
+
+                    }
+
+
+                    resultadoEmpresa.innerHTML = `
+
+                        <p class="sucesso">
+                            Empresa encontrada
+                        </p>
+
+                    `;
+
+
+                    contratoSelect.innerHTML = `
+
+                        <option value="">
+                            Selecione um contrato
+                        </option>
+
+                    `;
+
+
+                    contratos.forEach(cto => {
+
+                        const option =
+                            document.createElement('option');
+
+                        option.value =
+                            cto.id_cto;
+
+                        option.dataset.tipo =
+                            cto.tipo_contrato;
+
+                        option.textContent =
+
+                            `Contrato #${cto.id_cto} | ${cto.tipo_contrato}`;
+
+                        contratoSelect.appendChild(option);
+
+                    });
+
+
+                    areaContratos.style.display =
+                        'block';
+
+                }
+
+                catch (erro) {
+
+                    console.log(erro);
+
+                    resultadoEmpresa.innerHTML = `
+
+                        <p class="erro">
+                            Erro ao buscar empresa
+                        </p>
+
+                    `;
+
+                }
+
+            }
+
+        );
+
+
+        // ========================================
+        // ENVIAR CHAMADO
+        // ========================================
+
+        formulario.addEventListener(
+
+            'submit',
+
+            async (event) => {
+
+                event.preventDefault();
+
+
+                const contratoSelecionado =
+                    contratoSelect.options[
+                        contratoSelect.selectedIndex
+                    ];
+
+
+                const dados = {
+
+                    nome:
+                        document.getElementById('nome').value,
+
+                    id_cto:
+                        contratoSelect.value,
+
+                    tipo_cto:
+                        contratoSelecionado.dataset.tipo,
+
+                    titulo:
+                        document.getElementById('titulo').value,
+
+                    descricao:
+                        document.getElementById('descricao').value,
+
+                    prioridade:
+                        document.getElementById('prioridade').value,
+
+                    status_chamado:
+                        document.getElementById('status_chamado').value,
+
+                    data_abertura:
+                        document.getElementById('data_abertura').value
+
+                };
+
+
+                try {
+
+                    const resposta = await fetch(
+
+                        'http://localhost:3000/chamados/abrir',
 
                         {
 
@@ -318,9 +430,7 @@
 
                             },
 
-                            body: JSON.stringify(
-                                dados
-                            )
+                            body: JSON.stringify(dados)
 
                         }
 
@@ -331,31 +441,18 @@
                         await resposta.json();
 
 
-                    // =========================
-                    // SUCESSO
-                    // =========================
-
-                    alert(
-                        resultado.mensagem
-                    );
+                    alert(resultado.mensagem);
 
 
                     formulario.reset();
 
+                    atualizarData();
 
-                    // restaura data
-                    const novaData = new Date();
+                    areaContratos.style.display =
+                        'none';
 
-                    novaData.setMinutes(
-                        novaData.getMinutes() -
-                        novaData.getTimezoneOffset()
-                    );
-
-                    document.getElementById(
-                        "data_abertura"
-                    ).value = novaData
-                        .toISOString()
-                        .slice(0, 16);
+                    resultadoEmpresa.innerHTML =
+                        '';
 
                 }
 

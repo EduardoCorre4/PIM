@@ -202,3 +202,94 @@ button[type="reset"]:hover {
     flex-direction: column;
   }
 }
+
+.btn-voltar {
+
+    padding: 10px 20px;
+
+    margin-bottom: 20px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background-color: #1f4fa3;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    transition: 0.3s;
+
+}
+
+.btn-voltar:hover {
+
+    background-color: #163b79;
+
+}
+
+.container-voltar {
+
+    text-align: center;
+
+    margin-top: 30px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.btn-voltar {
+
+    padding: 12px 24px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background-color: #1f4fa3;
+
+    color: white;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+}
+
+
+.btn-voltar:hover {
+
+    background-color: #163b79;
+
+}
+
+
+.logo {
+
+    display: block;
+
+    margin: 0 auto;
+
+    width: 180px;
+
+}
+
+.card-chamado {
+
+    background-color: white;
+
+    border-radius: 10px;
+
+    padding: 15px;
+
+    margin-top: 15px;
+
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+}

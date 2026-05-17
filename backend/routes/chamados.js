@@ -52,4 +52,52 @@ router.post('/abrir', async (req, res) => {
 
 });
 
+// ========================================
+// LISTAR CHAMADOS POR STATUS
+// ========================================
+
+router.get('/status/:status', async (req, res) => {
+
+    try {
+
+        const status =
+            req.params.status;
+
+        const resultado = await sql.query`
+
+            SELECT
+
+                id_chamado,
+                id_cto,
+                titulo,
+                prioridade,
+                status_chamado
+
+            FROM CHAMADO
+
+            WHERE status_chamado = ${status}
+
+            ORDER BY id_chamado DESC
+
+        `;
+
+        res.json(resultado.recordset);
+
+    }
+
+    catch (erro) {
+
+        console.log(erro);
+
+        res.status(500).json({
+
+            erro:
+                'Erro ao buscar chamados'
+
+        });
+
+    }
+
+});
+
 module.exports = router;

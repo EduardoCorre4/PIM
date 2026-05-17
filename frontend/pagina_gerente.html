@@ -5,8 +5,7 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Painel do Gerente</title>
 
@@ -19,15 +18,85 @@
     <h1>Painel do Gerente</h1>
 
 
+    <!-- ======================================== -->
+    <!-- CONSULTAR CONTRATO -->
+    <!-- ======================================== -->
 
-    <!-- ================================= -->
+    <section>
+
+        <h2>Consultar Contrato</h2>
+
+        <label for="select_contrato">
+            Selecionar contrato
+        </label>
+
+        <select id="select_contrato">
+
+            <option value="">
+                Carregando contratos...
+            </option>
+
+        </select>
+
+        <button
+            type="button"
+            id="btn-buscar"
+        >
+            Buscar Contrato
+        </button>
+
+        <div id="dados-contrato"></div>
+
+    </section>
+
+
+    <!-- ======================================== -->
+    <!-- CONSULTAR CHAMADOS -->
+    <!-- ======================================== -->
+
+    <section>
+
+        <h2>Consultar Chamados</h2>
+
+        <label for="filtro_status">
+            Filtrar por status
+        </label>
+
+        <select id="filtro_status">
+
+            <option value="ABERTO">
+                ABERTO
+            </option>
+
+            <option value="EM ANDAMENTO">
+                EM ANDAMENTO
+            </option>
+
+            <option value="FECHADO">
+                FECHADO
+            </option>
+
+        </select>
+
+        <button
+            type="button"
+            id="btn-buscar-chamados"
+        >
+            Buscar Chamados
+        </button>
+
+        <div id="lista-chamados"></div>
+
+    </section>
+
+
+    <!-- ======================================== -->
     <!-- EDITAR CONTRATO -->
-    <!-- ================================= -->
+    <!-- ======================================== -->
 
     <form id="form-contrato">
 
         <h2>Editar Contrato</h2>
-
 
         <label for="id_cto">
             ID do contrato
@@ -36,22 +105,14 @@
         <input
             type="number"
             id="id_cto"
-            name="id_cto"
-            min="1"
-            required
+            readonly
         >
-
-
 
         <label for="status_contrato">
-            Status do contrato
+            Status
         </label>
 
-        <select
-            id="status_contrato"
-            name="status_contrato"
-            required
-        >
+        <select id="status_contrato">
 
             <option value="ATIVO">
                 ATIVO
@@ -67,20 +128,14 @@
 
         </select>
 
-
-
         <label for="data_fim">
-            Nova data final
+            Data final
         </label>
 
         <input
             type="date"
             id="data_fim"
-            name="data_fim"
-            required
         >
-
-
 
         <button type="submit">
             Atualizar Contrato
@@ -89,42 +144,19 @@
     </form>
 
 
-
-    <!-- ================================= -->
-    <!-- EDITAR CONFIGURAÇÕES -->
-    <!-- ================================= -->
+    <!-- ======================================== -->
+    <!-- CONFIGURAÇÕES -->
+    <!-- ======================================== -->
 
     <form id="form-configuracoes">
 
-        <h2>
-            Editar Configurações do Contrato
-        </h2>
-
-
-
-        <label for="id_config">
-            ID do contrato
-        </label>
-
-        <input
-            type="number"
-            id="id_config"
-            name="id_config"
-            min="1"
-            required
-        >
-
-
+        <h2>Configurações do Contrato</h2>
 
         <label for="tipo_edicao">
             Tipo do contrato
         </label>
 
-        <select
-            id="tipo_edicao"
-            name="tipo_edicao"
-            required
-        >
+        <select id="tipo_edicao">
 
             <option value="">
                 Selecione
@@ -144,30 +176,22 @@
 
         </select>
 
-
-
-        <!-- CAMPOS DINÂMICOS -->
         <div id="campos-gerente"></div>
 
-
-
         <button type="submit">
-            Atualizar Configurações
+            Salvar Configurações
         </button>
 
     </form>
 
 
-
-    <!-- ================================= -->
+    <!-- ======================================== -->
     <!-- EDITAR CHAMADO -->
-    <!-- ================================= -->
+    <!-- ======================================== -->
 
     <form id="form-chamado">
 
         <h2>Editar Chamado</h2>
-
-
 
         <label for="id_chamado">
             ID do chamado
@@ -176,22 +200,14 @@
         <input
             type="number"
             id="id_chamado"
-            name="id_chamado"
             min="1"
-            required
         >
-
-
 
         <label for="status_chamado">
-            Status do chamado
+            Status
         </label>
 
-        <select
-            id="status_chamado"
-            name="status_chamado"
-            required
-        >
+        <select id="status_chamado">
 
             <option value="ABERTO">
                 ABERTO
@@ -207,8 +223,6 @@
 
         </select>
 
-
-
         <button type="submit">
             Atualizar Chamado
         </button>
@@ -216,249 +230,457 @@
     </form>
 
 
+    <!-- ======================================== -->
+    <!-- BOTÃO VOLTAR -->
+    <!-- ======================================== -->
 
-    <!-- ================================= -->
-    <!-- LOGO -->
-    <!-- ================================= -->
+    <div class="container-voltar">
 
-    <figure>
-
-        <img
-            src="imagens/arte logo jke.png"
-            alt="Logo JKE"
-            class="logo"
+        <button
+            type="button"
+            onclick="window.location.href='index.html'"
+            class="btn-voltar"
         >
+            Voltar para a tela inicial
+        </button>
 
-    </figure>
+    </div>
 
 
+    <!-- ======================================== -->
+    <!-- LOGO -->
+    <!-- ======================================== -->
 
-    <!-- ================================= -->
-    <!-- CAMPOS DINÂMICOS -->
-    <!-- ================================= -->
+    <img
+        src="imagens/arte logo jke.png"
+        alt="Logo JKE"
+        class="logo"
+    >
+
+
+    <!-- ======================================== -->
+    <!-- SCRIPT -->
+    <!-- ======================================== -->
 
     <script>
 
-        const tipo =
-            document.getElementById(
-                "tipo_edicao"
-            );
+        const selectContrato =
+            document.getElementById('select_contrato');
 
-        const campos =
-            document.getElementById(
-                "campos-gerente"
-            );
+        const dadosContrato =
+            document.getElementById('dados-contrato');
 
+        const tipoEdicao =
+            document.getElementById('tipo_edicao');
 
-        tipo.addEventListener(
+        const camposGerente =
+            document.getElementById('campos-gerente');
 
-            "change",
+        const listaChamados =
+            document.getElementById('lista-chamados');
 
-            function () {
-
-                campos.innerHTML = "";
-
-
-                // =========================
-                // SP
-                // =========================
-
-                if (this.value === "SP") {
-
-                    campos.innerHTML = `
-
-                        <label for="sla_horas">
-                            SLA
-                        </label>
-
-                        <input
-                            type="number"
-                            id="sla_horas"
-                            min="1"
-                            required
-                        >
-
-                        <label>
-
-                            <input
-                                type="checkbox"
-                                id="suporte_24h"
-                            >
-
-                            Suporte 24h
-
-                        </label>
-
-                    `;
-                }
+        const filtroStatus =
+            document.getElementById('filtro_status');
 
 
-                // =========================
-                // SI
-                // =========================
+        // ========================================
+        // CARREGAR CONTRATOS
+        // ========================================
 
-                else if (this.value === "SI") {
+        async function carregarContratos() {
 
-                    campos.innerHTML = `
+            try {
 
-                        <label for="quantidade_usuarios">
-                            Quantidade de usuários
-                        </label>
+                const resposta = await fetch(
+                    'http://localhost:3000/contratos'
+                );
 
-                        <input
-                            type="number"
-                            id="quantidade_usuarios"
-                            min="1"
-                            required
-                        >
+                const contratos =
+                    await resposta.json();
 
-                        <label>
+                selectContrato.innerHTML =
+                    '<option value="">Selecione</option>';
 
-                            <input
-                                type="checkbox"
-                                id="possui_backup"
-                            >
+                contratos.forEach(cto => {
 
-                            Possui backup
+                    const option =
+                        document.createElement('option');
 
-                        </label>
+                    option.value =
+                        cto.id_cto;
 
-                    `;
-                }
+                    option.textContent =
+                        `#${cto.id_cto} - ${cto.empresa}`;
 
+                    selectContrato.appendChild(option);
 
-                // =========================
-                // CS
-                // =========================
-
-                else if (this.value === "CS") {
-
-                    campos.innerHTML = `
-
-                        <label for="nivel_seguranca">
-                            Nível de segurança
-                        </label>
-
-                        <select
-                            id="nivel_seguranca"
-                            required
-                        >
-
-                            <option value="BAIXO">
-                                BAIXO
-                            </option>
-
-                            <option value="MEDIO">
-                                MEDIO
-                            </option>
-
-                            <option value="ALTO">
-                                ALTO
-                            </option>
-
-                            <option value="CRITICO">
-                                CRITICO
-                            </option>
-
-                        </select>
-
-
-                        <label>
-
-                            <input
-                                type="checkbox"
-                                id="monitoramento"
-                            >
-
-                            Monitoramento
-
-                        </label>
-
-                    `;
-                }
+                });
 
             }
 
-        );
+            catch (erro) {
 
-    </script>
+                console.log(erro);
 
+                alert('Erro ao carregar contratos');
 
+            }
 
-    <!-- ================================= -->
-    <!-- BACKEND CONTRATO -->
-    <!-- ================================= -->
+        }
 
-    <script>
-
-        const formContrato =
-            document.getElementById(
-                'form-contrato'
-            );
+        carregarContratos();
 
 
-        formContrato.addEventListener(
+        // ========================================
+        // BUSCAR CONTRATO
+        // ========================================
 
-            'submit',
-
-            async function (event) {
-
-                event.preventDefault();
-
+        document
+            .getElementById('btn-buscar')
+            .addEventListener('click', async () => {
 
                 const id =
-                    document.getElementById(
-                        'id_cto'
-                    ).value;
+                    selectContrato.value;
 
+                if (!id) {
 
-                const dados = {
+                    alert('Selecione um contrato');
 
-                    status_contrato:
-                        document.getElementById(
-                            'status_contrato'
-                        ).value,
+                    return;
 
-                    data_fim:
-                        document.getElementById(
-                            'data_fim'
-                        ).value
-
-                };
-
+                }
 
                 try {
 
                     const resposta = await fetch(
+                        `http://localhost:3000/contratos/${id}`
+                    );
 
-                        `/api/gerente/contrato/${id}`,
+                    const contrato =
+                        await resposta.json();
+
+                    dadosContrato.innerHTML = `
+
+                        <div class="card-chamado">
+
+                            <h3>
+                                Dados do Contrato
+                            </h3>
+
+                            <p>
+                                <strong>ID:</strong>
+                                ${contrato.id_cto}
+                            </p>
+
+                            <p>
+                                <strong>Empresa:</strong>
+                                ${contrato.empresa}
+                            </p>
+
+                            <p>
+                                <strong>Tipo:</strong>
+                                ${contrato.tipo_contrato}
+                            </p>
+
+                            <p>
+                                <strong>Status:</strong>
+                                ${contrato.status_contrato}
+                            </p>
+
+                            <p>
+                                <strong>Valor:</strong>
+                                R$ ${contrato.valor}
+                            </p>
+
+                        </div>
+
+                    `;
+
+                    document.getElementById('id_cto').value =
+                        contrato.id_cto;
+
+                    document.getElementById('status_contrato').value =
+                        contrato.status_contrato;
+
+                    document.getElementById('data_fim').value =
+                        contrato.data_fim
+                            ? contrato.data_fim.split('T')[0]
+                            : '';
+
+                    tipoEdicao.value =
+                        contrato.tipo_contrato;
+
+                    carregarCampos(
+                        contrato.tipo_contrato
+                    );
+
+                }
+
+                catch (erro) {
+
+                    console.log(erro);
+
+                    alert('Erro ao buscar contrato');
+
+                }
+
+            });
+
+
+        // ========================================
+        // CAMPOS DINÂMICOS
+        // ========================================
+
+        function carregarCampos(tipo) {
+
+            camposGerente.innerHTML = '';
+
+            if (tipo === 'SP') {
+
+                camposGerente.innerHTML = `
+
+                    <label>
+                        SLA
+                    </label>
+
+                    <input
+                        type="number"
+                        id="sla_horas"
+                    >
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            id="suporte_24h"
+                        >
+
+                        Suporte 24h
+
+                    </label>
+
+                `;
+
+            }
+
+            else if (tipo === 'SI') {
+
+                camposGerente.innerHTML = `
+
+                    <label>
+                        Quantidade de usuários
+                    </label>
+
+                    <input
+                        type="number"
+                        id="quantidade_usuarios"
+                    >
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            id="possui_backup"
+                        >
+
+                        Possui backup
+
+                    </label>
+
+                `;
+
+            }
+
+            else if (tipo === 'CS') {
+
+                camposGerente.innerHTML = `
+
+                    <label>
+                        Nível de segurança
+                    </label>
+
+                    <select id="nivel_seguranca">
+
+                        <option value="BAIXO">
+                            BAIXO
+                        </option>
+
+                        <option value="MEDIO">
+                            MEDIO
+                        </option>
+
+                        <option value="ALTO">
+                            ALTO
+                        </option>
+
+                        <option value="CRITICO">
+                            CRITICO
+                        </option>
+
+                    </select>
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            id="monitoramento"
+                        >
+
+                        Monitoramento
+
+                    </label>
+
+                `;
+
+            }
+
+        }
+
+        tipoEdicao.addEventListener('change', () => {
+
+            carregarCampos(
+                tipoEdicao.value
+            );
+
+        });
+
+
+        // ========================================
+        // LISTAR CHAMADOS
+        // ========================================
+
+        async function carregarChamados() {
+
+            const status =
+                filtroStatus.value;
+
+            try {
+
+                const resposta = await fetch(
+
+                    `http://localhost:3000/chamados/status/${encodeURIComponent(status)}`
+
+                );
+
+                const chamados =
+                    await resposta.json();
+
+                listaChamados.innerHTML = '';
+
+                if (chamados.length === 0) {
+
+                    listaChamados.innerHTML = `
+
+                        <p>
+                            Nenhum chamado encontrado
+                        </p>
+
+                    `;
+
+                    return;
+
+                }
+
+                chamados.forEach(chamado => {
+
+                    listaChamados.innerHTML += `
+
+                        <div class="card-chamado">
+
+                            <h3>
+                                Chamado #${chamado.id_chamado}
+                            </h3>
+
+                            <p>
+                                <strong>Contrato:</strong>
+                                ${chamado.id_cto}
+                            </p>
+
+                            <p>
+                                <strong>Título:</strong>
+                                ${chamado.titulo}
+                            </p>
+
+                            <p>
+                                <strong>Prioridade:</strong>
+                                ${chamado.prioridade}
+                            </p>
+
+                            <p>
+                                <strong>Status:</strong>
+                                ${chamado.status_chamado}
+                            </p>
+
+                        </div>
+
+                    `;
+
+                });
+
+            }
+
+            catch (erro) {
+
+                console.log(erro);
+
+                alert('Erro ao carregar chamados');
+
+            }
+
+        }
+
+
+        document
+            .getElementById('btn-buscar-chamados')
+            .addEventListener('click', carregarChamados);
+
+
+        // ========================================
+        // ATUALIZAR CONTRATO
+        // ========================================
+
+        document
+            .getElementById('form-contrato')
+            .addEventListener('submit', async (e) => {
+
+                e.preventDefault();
+
+                const id =
+                    document.getElementById('id_cto').value;
+
+                const dados = {
+
+                    status_contrato:
+                        document.getElementById('status_contrato').value,
+
+                    data_fim:
+                        document.getElementById('data_fim').value
+
+                };
+
+                try {
+
+                    await fetch(
+
+                        `http://localhost:3000/gerente/contrato/${id}`,
 
                         {
 
                             method: 'PUT',
 
                             headers: {
-
                                 'Content-Type':
                                     'application/json'
-
                             },
 
-                            body: JSON.stringify(
-                                dados
-                            )
+                            body: JSON.stringify(dados)
 
                         }
 
                     );
 
-
-                    const resultado =
-                        await resposta.json();
-
-
                     alert(
-                        resultado.mensagem
+                        'Contrato atualizado com sucesso!'
                     );
 
                 }
@@ -473,229 +695,52 @@
 
                 }
 
-            }
-
-        );
-
-    </script>
+            });
 
 
+        // ========================================
+        // ATUALIZAR CHAMADO
+        // ========================================
 
-    <!-- ================================= -->
-    <!-- BACKEND CONFIGURAÇÕES -->
-    <!-- ================================= -->
+        document
+            .getElementById('form-chamado')
+            .addEventListener('submit', async (e) => {
 
-    <script>
-
-        const formConfig =
-            document.getElementById(
-                'form-configuracoes'
-            );
-
-
-        formConfig.addEventListener(
-
-            'submit',
-
-            async function (event) {
-
-                event.preventDefault();
-
-
-                const tipo =
-                    document.getElementById(
-                        'tipo_edicao'
-                    ).value;
-
+                e.preventDefault();
 
                 const id =
-                    document.getElementById(
-                        'id_config'
-                    ).value;
-
-
-                const dados = {
-                    tipo
-                };
-
-
-                // =========================
-                // SP
-                // =========================
-
-                if (tipo === 'SP') {
-
-                    dados.sla_horas =
-                        document.getElementById(
-                            'sla_horas'
-                        ).value;
-
-                    dados.suporte_24h =
-                        document.getElementById(
-                            'suporte_24h'
-                        ).checked;
-                }
-
-
-                // =========================
-                // SI
-                // =========================
-
-                else if (tipo === 'SI') {
-
-                    dados.quantidade_usuarios =
-                        document.getElementById(
-                            'quantidade_usuarios'
-                        ).value;
-
-                    dados.possui_backup =
-                        document.getElementById(
-                            'possui_backup'
-                        ).checked;
-                }
-
-
-                // =========================
-                // CS
-                // =========================
-
-                else if (tipo === 'CS') {
-
-                    dados.nivel_seguranca =
-                        document.getElementById(
-                            'nivel_seguranca'
-                        ).value;
-
-                    dados.monitoramento =
-                        document.getElementById(
-                            'monitoramento'
-                        ).checked;
-                }
-
-
-                try {
-
-                    const resposta = await fetch(
-
-                        `/api/gerente/configuracoes/${id}`,
-
-                        {
-
-                            method: 'PUT',
-
-                            headers: {
-
-                                'Content-Type':
-                                    'application/json'
-
-                            },
-
-                            body: JSON.stringify(
-                                dados
-                            )
-
-                        }
-
-                    );
-
-
-                    const resultado =
-                        await resposta.json();
-
-
-                    alert(
-                        resultado.mensagem
-                    );
-
-                }
-
-                catch (erro) {
-
-                    console.log(erro);
-
-                    alert(
-                        'Erro ao atualizar configurações'
-                    );
-
-                }
-
-            }
-
-        );
-
-    </script>
-
-
-
-    <!-- ================================= -->
-    <!-- BACKEND CHAMADO -->
-    <!-- ================================= -->
-
-    <script>
-
-        const formChamado =
-            document.getElementById(
-                'form-chamado'
-            );
-
-
-        formChamado.addEventListener(
-
-            'submit',
-
-            async function (event) {
-
-                event.preventDefault();
-
-
-                const id =
-                    document.getElementById(
-                        'id_chamado'
-                    ).value;
-
+                    document.getElementById('id_chamado').value;
 
                 const dados = {
 
                     status_chamado:
-                        document.getElementById(
-                            'status_chamado'
-                        ).value
+                        document.getElementById('status_chamado').value
 
                 };
 
-
                 try {
 
-                    const resposta = await fetch(
+                    await fetch(
 
-                        `/api/gerente/chamado/${id}`,
+                        `http://localhost:3000/gerente/chamado/${id}`,
 
                         {
 
                             method: 'PUT',
 
                             headers: {
-
                                 'Content-Type':
                                     'application/json'
-
                             },
 
-                            body: JSON.stringify(
-                                dados
-                            )
+                            body: JSON.stringify(dados)
 
                         }
 
                     );
 
-
-                    const resultado =
-                        await resposta.json();
-
-
                     alert(
-                        resultado.mensagem
+                        'Chamado atualizado com sucesso!'
                     );
 
                 }
@@ -710,9 +755,7 @@
 
                 }
 
-            }
-
-        );
+            });
 
     </script>
 

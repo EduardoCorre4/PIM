@@ -6,6 +6,10 @@ const { sql } = require('../db');
 
 
 
+// ========================================
+// CADASTRAR CONTRATO
+// ========================================
+
 routes.post('/cadastrar', async (req, res) => {
 
     try {
@@ -29,9 +33,10 @@ routes.post('/cadastrar', async (req, res) => {
 
         } = req.body;
 
-        // =============================
-        // INSERE NO CTO
-        // =============================
+
+        // ========================================
+        // INSERE NA TABELA CTO
+        // ========================================
 
         const resultado = await sql.query`
 
@@ -62,15 +67,13 @@ routes.post('/cadastrar', async (req, res) => {
         `;
 
 
-
         const id_cto =
             resultado.recordset[0].id_cto;
 
 
-
-        // =============================
-        // SP
-        // =============================
+        // ========================================
+        // CONTRATO SP
+        // ========================================
 
         if (tipo_cto === 'SP') {
 
@@ -93,13 +96,13 @@ routes.post('/cadastrar', async (req, res) => {
                 )
 
             `;
+
         }
 
 
-
-        // =============================
-        // SI
-        // =============================
+        // ========================================
+        // CONTRATO SI
+        // ========================================
 
         else if (tipo_cto === 'SI') {
 
@@ -122,13 +125,13 @@ routes.post('/cadastrar', async (req, res) => {
                 )
 
             `;
+
         }
 
 
-
-        // =============================
-        // CS
-        // =============================
+        // ========================================
+        // CONTRATO CS
+        // ========================================
 
         else if (tipo_cto === 'CS') {
 
@@ -151,27 +154,29 @@ routes.post('/cadastrar', async (req, res) => {
                 )
 
             `;
+
         }
 
 
-
-        // =============================
+        // ========================================
         // SUCESSO
-        // =============================
+        // ========================================
 
         res.json({
 
             mensagem:
-                'Contrato cadastrado com sucesso!'
+                'Contrato cadastrado com sucesso!',
+
+            id_cto
 
         });
 
     }
 
 
-    // =============================
+    // ========================================
     // ERRO
-    // =============================
+    // ========================================
 
     catch (erro) {
 
@@ -181,6 +186,144 @@ routes.post('/cadastrar', async (req, res) => {
 
             erro:
                 'Erro ao cadastrar contrato'
+
+        });
+
+    }
+
+});
+
+
+
+// ========================================
+// LISTAR CONTRATOS
+// ========================================
+
+routes.get('/', async (req, res) => {
+
+    try {
+
+        const resultado = await sql.query`
+
+            SELECT
+
+                id_cto,
+                empresa,
+                tipo_contrato,
+                status_contrato
+
+            FROM CTO
+
+            ORDER BY id_cto DESC
+
+        `;
+
+        res.json(resultado.recordset);
+
+    }
+
+    catch (erro) {
+
+        console.log(erro);
+
+        res.status(500).json({
+
+            erro:
+                'Erro ao buscar contratos'
+
+        });
+
+    }
+
+});
+
+routes.get('/empresa/:nome', async (req, res) => {
+
+    try {
+
+        const nome =
+            req.params.nome;
+
+        const resultado = await sql.query`
+
+            SELECT
+                id_cto,
+                tipo_contrato
+
+            FROM CTO
+
+            WHERE empresa = ${nome}
+            AND status_contrato = 'ATIVO'
+
+        `;
+
+        res.json(resultado.recordset);
+
+    }
+
+    catch (erro) {
+
+        console.log(erro);
+
+        res.status(500).json({
+
+            erro:
+                'Erro ao buscar empresa'
+
+        });
+
+    }
+
+});
+
+
+// ========================================
+// BUSCAR CONTRATO POR ID
+// ========================================
+
+routes.get('/:id', async (req, res) => {
+
+    try {
+
+        const id =
+            req.params.id;
+
+
+        const resultado = await sql.query`
+
+            SELECT
+                *
+            FROM CTO
+
+            WHERE id_cto = ${id}
+
+        `;
+
+
+        if (resultado.recordset.length === 0) {
+
+            return res.status(404).json({
+
+                erro:
+                    'Contrato não encontrado'
+
+            });
+
+        }
+
+
+        res.json(resultado.recordset[0]);
+
+    }
+
+    catch (erro) {
+
+        console.log(erro);
+
+        res.status(500).json({
+
+            erro:
+                'Erro ao buscar contrato'
 
         });
 
