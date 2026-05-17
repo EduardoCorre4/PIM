@@ -1,0 +1,60 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: pim-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Express
+      MSSQL_SA_PASSWORD: ${SA_PASSWORD:-YourStrong!Passw0rd}
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    restart: unless-stopped
+
+  sqlserver-init:
+    image: mcr.microsoft.com/mssql-tools
+    container_name: pim-sqlserver-init
+    depends_on:
+      - sqlserver
+    environment:
+      SA_PASSWORD: ${SA_PASSWORD:-YourStrong!Passw0rd}
+    volumes:
+      - ./docker/sqlserver:/scripts:ro
+    command: ["/bin/sh", "/scripts/init-db.sh"]
+    restart: "no"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pim-backend
+    depends_on:
+      sqlserver-init:
+        condition: service_completed_successfully
+    environment:
+      PORT: 3000
+      DB_USER: sa
+      DB_PASSWORD: ${SA_PASSWORD:-YourStrong!Passw0rd}
+      DB_SERVER: sqlserver
+      DB_PORT: 1433
+      DB_NAME: SistemaContratos
+      DB_RETRY_DELAY_MS: 5000
+      DB_MAX_RETRIES: 30
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: pim-frontend
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    restart: unless-stopped
+
+volumes:
+  sqlserver_data:

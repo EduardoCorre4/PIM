@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Painel do Gerente</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <h1>Painel do Gerente</h1>
+
+
+
+    <!-- ================================= -->
+    <!-- EDITAR CONTRATO -->
+    <!-- ================================= -->
+
+    <form id="form-contrato">
+
+        <h2>Editar Contrato</h2>
+
+
+        <label for="id_cto">
+            ID do contrato
+        </label>
+
+        <input
+            type="number"
+            id="id_cto"
+            name="id_cto"
+            min="1"
+            required
+        >
+
+
+
+        <label for="status_contrato">
+            Status do contrato
+        </label>
+
+        <select
+            id="status_contrato"
+            name="status_contrato"
+            required
+        >
+
+            <option value="ATIVO">
+                ATIVO
+            </option>
+
+            <option value="SUSPENSO">
+                SUSPENSO
+            </option>
+
+            <option value="ENCERRADO">
+                ENCERRADO
+            </option>
+
+        </select>
+
+
+
+        <label for="data_fim">
+            Nova data final
+        </label>
+
+        <input
+            type="date"
+            id="data_fim"
+            name="data_fim"
+            required
+        >
+
+
+
+        <button type="submit">
+            Atualizar Contrato
+        </button>
+
+    </form>
+
+
+
+    <!-- ================================= -->
+    <!-- EDITAR CONFIGURAÇÕES -->
+    <!-- ================================= -->
+
+    <form id="form-configuracoes">
+
+        <h2>
+            Editar Configurações do Contrato
+        </h2>
+
+
+
+        <label for="id_config">
+            ID do contrato
+        </label>
+
+        <input
+            type="number"
+            id="id_config"
+            name="id_config"
+            min="1"
+            required
+        >
+
+
+
+        <label for="tipo_edicao">
+            Tipo do contrato
+        </label>
+
+        <select
+            id="tipo_edicao"
+            name="tipo_edicao"
+            required
+        >
+
+            <option value="">
+                Selecione
+            </option>
+
+            <option value="SP">
+                SP
+            </option>
+
+            <option value="SI">
+                SI
+            </option>
+
+            <option value="CS">
+                CS
+            </option>
+
+        </select>
+
+
+
+        <!-- CAMPOS DINÂMICOS -->
+        <div id="campos-gerente"></div>
+
+
+
+        <button type="submit">
+            Atualizar Configurações
+        </button>
+
+    </form>
+
+
+
+    <!-- ================================= -->
+    <!-- EDITAR CHAMADO -->
+    <!-- ================================= -->
+
+    <form id="form-chamado">
+
+        <h2>Editar Chamado</h2>
+
+
+
+        <label for="id_chamado">
+            ID do chamado
+        </label>
+
+        <input
+            type="number"
+            id="id_chamado"
+            name="id_chamado"
+            min="1"
+            required
+        >
+
+
+
+        <label for="status_chamado">
+            Status do chamado
+        </label>
+
+        <select
+            id="status_chamado"
+            name="status_chamado"
+            required
+        >
+
+            <option value="ABERTO">
+                ABERTO
+            </option>
+
+            <option value="EM ANDAMENTO">
+                EM ANDAMENTO
+            </option>
+
+            <option value="FECHADO">
+                FECHADO
+            </option>
+
+        </select>
+
+
+
+        <button type="submit">
+            Atualizar Chamado
+        </button>
+
+    </form>
+
+
+
+    <!-- ================================= -->
+    <!-- LOGO -->
+    <!-- ================================= -->
+
+    <figure>
+
+        <img
+            src="imagens/arte logo jke.png"
+            alt="Logo JKE"
+            class="logo"
+        >
+
+    </figure>
+
+
+
+    <!-- ================================= -->
+    <!-- CAMPOS DINÂMICOS -->
+    <!-- ================================= -->
+
+    <script>
+
+        const tipo =
+            document.getElementById(
+                "tipo_edicao"
+            );
+
+        const campos =
+            document.getElementById(
+                "campos-gerente"
+            );
+
+
+        tipo.addEventListener(
+
+            "change",
+
+            function () {
+
+                campos.innerHTML = "";
+
+
+                // =========================
+                // SP
+                // =========================
+
+                if (this.value === "SP") {
+
+                    campos.innerHTML = `
+
+                        <label for="sla_horas">
+                            SLA
+                        </label>
+
+                        <input
+                            type="number"
+                            id="sla_horas"
+                            min="1"
+                            required
+                        >
+
+                        <label>
+
+                            <input
+                                type="checkbox"
+                                id="suporte_24h"
+                            >
+
+                            Suporte 24h
+
+                        </label>
+
+                    `;
+                }
+
+
+                // =========================
+                // SI
+                // =========================
+
+                else if (this.value === "SI") {
+
+                    campos.innerHTML = `
+
+                        <label for="quantidade_usuarios">
+                            Quantidade de usuários
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quantidade_usuarios"
+                            min="1"
+                            required
+                        >
+
+                        <label>
+
+                            <input
+                                type="checkbox"
+                                id="possui_backup"
+                            >
+
+                            Possui backup
+
+                        </label>
+
+                    `;
+                }
+
+
+                // =========================
+                // CS
+                // =========================
+
+                else if (this.value === "CS") {
+
+                    campos.innerHTML = `
+
+                        <label for="nivel_seguranca">
+                            Nível de segurança
+                        </label>
+
+                        <select
+                            id="nivel_seguranca"
+                            required
+                        >
+
+                            <option value="BAIXO">
+                                BAIXO
+                            </option>
+
+                            <option value="MEDIO">
+                                MEDIO
+                            </option>
+
+                            <option value="ALTO">
+                                ALTO
+                            </option>
+
+                            <option value="CRITICO">
+                                CRITICO
+                            </option>
+
+                        </select>
+
+
+                        <label>
+
+                            <input
+                                type="checkbox"
+                                id="monitoramento"
+                            >
+
+                            Monitoramento
+
+                        </label>
+
+                    `;
+                }
+
+            }
+
+        );
+
+    </script>
+
+
+
+    <!-- ================================= -->
+    <!-- BACKEND CONTRATO -->
+    <!-- ================================= -->
+
+    <script>
+
+        const formContrato =
+            document.getElementById(
+                'form-contrato'
+            );
+
+
+        formContrato.addEventListener(
+
+            'submit',
+
+            async function (event) {
+
+                event.preventDefault();
+
+
+                const id =
+                    document.getElementById(
+                        'id_cto'
+                    ).value;
+
+
+                const dados = {
+
+                    status_contrato:
+                        document.getElementById(
+                            'status_contrato'
+                        ).value,
+
+                    data_fim:
+                        document.getElementById(
+                            'data_fim'
+                        ).value
+
+                };
+
+
+                try {
+
+                    const resposta = await fetch(
+
+                        `/api/gerente/contrato/${id}`,
+
+                        {
+
+                            method: 'PUT',
+
+                            headers: {
+
+                                'Content-Type':
+                                    'application/json'
+
+                            },
+
+                            body: JSON.stringify(
+                                dados
+                            )
+
+                        }
+
+                    );
+
+
+                    const resultado =
+                        await resposta.json();
+
+
+                    alert(
+                        resultado.mensagem
+                    );
+
+                }
+
+                catch (erro) {
+
+                    console.log(erro);
+
+                    alert(
+                        'Erro ao atualizar contrato'
+                    );
+
+                }
+
+            }
+
+        );
+
+    </script>
+
+
+
+    <!-- ================================= -->
+    <!-- BACKEND CONFIGURAÇÕES -->
+    <!-- ================================= -->
+
+    <script>
+
+        const formConfig =
+            document.getElementById(
+                'form-configuracoes'
+            );
+
+
+        formConfig.addEventListener(
+
+            'submit',
+
+            async function (event) {
+
+                event.preventDefault();
+
+
+                const tipo =
+                    document.getElementById(
+                        'tipo_edicao'
+                    ).value;
+
+
+                const id =
+                    document.getElementById(
+                        'id_config'
+                    ).value;
+
+
+                const dados = {
+                    tipo
+                };
+
+
+                // =========================
+                // SP
+                // =========================
+
+                if (tipo === 'SP') {
+
+                    dados.sla_horas =
+                        document.getElementById(
+                            'sla_horas'
+                        ).value;
+
+                    dados.suporte_24h =
+                        document.getElementById(
+                            'suporte_24h'
+                        ).checked;
+                }
+
+
+                // =========================
+                // SI
+                // =========================
+
+                else if (tipo === 'SI') {
+
+                    dados.quantidade_usuarios =
+                        document.getElementById(
+                            'quantidade_usuarios'
+                        ).value;
+
+                    dados.possui_backup =
+                        document.getElementById(
+                            'possui_backup'
+                        ).checked;
+                }
+
+
+                // =========================
+                // CS
+                // =========================
+
+                else if (tipo === 'CS') {
+
+                    dados.nivel_seguranca =
+                        document.getElementById(
+                            'nivel_seguranca'
+                        ).value;
+
+                    dados.monitoramento =
+                        document.getElementById(
+                            'monitoramento'
+                        ).checked;
+                }
+
+
+                try {
+
+                    const resposta = await fetch(
+
+                        `/api/gerente/configuracoes/${id}`,
+
+                        {
+
+                            method: 'PUT',
+
+                            headers: {
+
+                                'Content-Type':
+                                    'application/json'
+
+                            },
+
+                            body: JSON.stringify(
+                                dados
+                            )
+
+                        }
+
+                    );
+
+
+                    const resultado =
+                        await resposta.json();
+
+
+                    alert(
+                        resultado.mensagem
+                    );
+
+                }
+
+                catch (erro) {
+
+                    console.log(erro);
+
+                    alert(
+                        'Erro ao atualizar configurações'
+                    );
+
+                }
+
+            }
+
+        );
+
+    </script>
+
+
+
+    <!-- ================================= -->
+    <!-- BACKEND CHAMADO -->
+    <!-- ================================= -->
+
+    <script>
+
+        const formChamado =
+            document.getElementById(
+                'form-chamado'
+            );
+
+
+        formChamado.addEventListener(
+
+            'submit',
+
+            async function (event) {
+
+                event.preventDefault();
+
+
+                const id =
+                    document.getElementById(
+                        'id_chamado'
+                    ).value;
+
+
+                const dados = {
+
+                    status_chamado:
+                        document.getElementById(
+                            'status_chamado'
+                        ).value
+
+                };
+
+
+                try {
+
+                    const resposta = await fetch(
+
+                        `/api/gerente/chamado/${id}`,
+
+                        {
+
+                            method: 'PUT',
+
+                            headers: {
+
+                                'Content-Type':
+                                    'application/json'
+
+                            },
+
+                            body: JSON.stringify(
+                                dados
+                            )
+
+                        }
+
+                    );
+
+
+                    const resultado =
+                        await resposta.json();
+
+
+                    alert(
+                        resultado.mensagem
+                    );
+
+                }
+
+                catch (erro) {
+
+                    console.log(erro);
+
+                    alert(
+                        'Erro ao atualizar chamado'
+                    );
+
+                }
+
+            }
+
+        );
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cadastro de Contrato</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <h1>Cadastro de novo Contrato</h1>
+
+
+    <!-- FORM -->
+    <form id="form-contrato">
+
+        <!-- NOME -->
+        <label for="nome">Nome</label>
+
+        <input
+            type="text"
+            id="nome"
+            name="nome"
+            placeholder="Digite a razão social da empresa"
+            required
+        >
+
+
+        <!-- DATA INICIO -->
+        <label for="inicio_contrato">
+            Data de início:
+        </label>
+
+        <input
+            type="date"
+            id="inicio_contrato"
+            name="inicio_contrato"
+            readonly
+        >
+
+
+        <!-- DATA FIM -->
+        <label for="fim_contrato">
+            Data de fim:
+        </label>
+
+        <input
+            type="date"
+            id="fim_contrato"
+            name="fim_contrato"
+            required
+        >
+
+
+        <!-- TIPO CONTRATO -->
+        <label for="tipo_cto">
+            Tipo de Contrato:
+        </label>
+
+        <select
+            id="tipo_cto"
+            name="tipo_cto"
+            required
+        >
+
+            <option value="">
+                Selecione o tipo de contrato
+            </option>
+
+            <option value="SP">
+                Suporte Técnico
+            </option>
+
+            <option value="SI">
+                Suporte de Infraestrutura
+            </option>
+
+            <option value="CS">
+                Criação de Software
+            </option>
+
+        </select>
+
+
+        <!-- CAMPOS DINÂMICOS -->
+        <div id="campos-especificos"></div>
+
+
+        <!-- VALOR -->
+        <label for="valor_contrato">
+            Valor do contrato:
+        </label>
+
+        <input
+            type="number"
+            id="valor_contrato"
+            name="valor_contrato"
+            placeholder="R$ 0,00"
+            min="0"
+            required
+        >
+
+
+        <!-- BOTÕES -->
+        <div class="submit-buttons">
+
+            <button type="submit">
+                Enviar
+            </button>
+
+            <button type="reset">
+                Limpar
+            </button>
+
+        </div>
+
+    </form>
+
+
+    <!-- LOGO -->
+    <figure>
+
+        <img
+            src="imagens/arte logo jke.png"
+            alt="Logo JKE"
+            class="logo"
+        >
+
+    </figure>
+
+
+
+    <!-- ========================= -->
+    <!-- DATA AUTOMÁTICA -->
+    <!-- ========================= -->
+
+    <script>
+
+        const hoje = new Date()
+            .toISOString()
+            .split('T')[0];
+
+        document.getElementById(
+            'inicio_contrato'
+        ).value = hoje;
+
+    </script>
+
+
+
+    <!-- ========================= -->
+    <!-- CAMPOS DINÂMICOS -->
+    <!-- ========================= -->
+
+    <script>
+
+        const tipoContrato =
+            document.getElementById("tipo_cto");
+
+        const campos =
+            document.getElementById(
+                "campos-especificos"
+            );
+
+
+        tipoContrato.addEventListener(
+            "change",
+
+            function () {
+
+                const tipo = this.value;
+
+                campos.innerHTML = "";
+
+
+                // =========================
+                // SP
+                // =========================
+
+                if (tipo === "SP") {
+
+                    campos.innerHTML = `
+
+                        <h3>
+                            Configurações - Suporte Técnico
+                        </h3>
+
+                        <label for="sla_horas">
+                            SLA (horas)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="sla_horas"
+                            name="sla_horas"
+                            min="1"
+                            required
+                        >
+
+                        <label>
+
+                            <input
+                                type="checkbox"
+                                id="suporte_24h"
+                                name="suporte_24h"
+                            >
+
+                            Suporte 24h
+
+                        </label>
+
+                    `;
+                }
+
+
+                // =========================
+                // SI
+                // =========================
+
+                else if (tipo === "SI") {
+
+                    campos.innerHTML = `
+
+                        <h3>
+                            Configurações - Infraestrutura
+                        </h3>
+
+                        <label for="quantidade_usuarios">
+                            Quantidade de usuários
+                        </label>
+
+                        <input
+                            type="number"
+                            id="quantidade_usuarios"
+                            name="quantidade_usuarios"
+                            min="1"
+                            required
+                        >
+
+                        <label>
+
+                            <input
+                                type="checkbox"
+                                id="possui_backup"
+                                name="possui_backup"
+                            >
+
+                            Possui backup
+
+                        </label>
+
+                    `;
+                }
+
+
+                // =========================
+                // CS
+                // =========================
+
+                else if (tipo === "CS") {
+
+                    campos.innerHTML = `
+
+                        <h3>
+                            Configurações - Criação de Software
+                        </h3>
+
+                        <label for="nivel_seguranca">
+                            Nível de segurança
+                        </label>
+
+                        <select
+                            id="nivel_seguranca"
+                            name="nivel_seguranca"
+                            required
+                        >
+
+                            <option value="">
+                                Selecione
+                            </option>
+
+                            <option value="BAIXO">
+                                BAIXO
+                            </option>
+
+                            <option value="MEDIO">
+                                MEDIO
+                            </option>
+
+                            <option value="ALTO">
+                                ALTO
+                            </option>
+
+                            <option value="CRITICO">
+                                CRITICO
+                            </option>
+
+                        </select>
+
+
+                        <label>
+
+                            <input
+                                type="checkbox"
+                                id="monitoramento"
+                                name="monitoramento"
+                            >
+
+                            Monitoramento ativo
+
+                        </label>
+
+                    `;
+                }
+
+            }
+
+        );
+
+    </script>
+
+
+
+    <!-- ========================= -->
+    <!-- ENVIO PARA O BACKEND -->
+    <!-- ========================= -->
+
+    <script>
+
+        const formulario =
+            document.getElementById(
+                'form-contrato'
+            );
+
+
+        formulario.addEventListener(
+
+            'submit',
+
+            async function (event) {
+
+                // impede reload da página
+                event.preventDefault();
+
+
+                // =========================
+                // DADOS BASE
+                // =========================
+
+                const dados = {
+
+                    nome:
+                        document.getElementById(
+                            'nome'
+                        ).value,
+
+                    tipo_cto:
+                        document.getElementById(
+                            'tipo_cto'
+                        ).value,
+
+                    inicio_contrato:
+                        document.getElementById(
+                            'inicio_contrato'
+                        ).value,
+
+                    fim_contrato:
+                        document.getElementById(
+                            'fim_contrato'
+                        ).value,
+
+                    valor_contrato:
+                        document.getElementById(
+                            'valor_contrato'
+                        ).value
+                };
+
+
+                // =========================
+                // CAMPOS SP
+                // =========================
+
+                if (dados.tipo_cto === "SP") {
+
+                    dados.sla_horas =
+                        document.getElementById(
+                            'sla_horas'
+                        ).value;
+
+                    dados.suporte_24h =
+                        document.getElementById(
+                            'suporte_24h'
+                        ).checked;
+                }
+
+
+                // =========================
+                // CAMPOS SI
+                // =========================
+
+                else if (dados.tipo_cto === "SI") {
+
+                    dados.quantidade_usuarios =
+                        document.getElementById(
+                            'quantidade_usuarios'
+                        ).value;
+
+                    dados.possui_backup =
+                        document.getElementById(
+                            'possui_backup'
+                        ).checked;
+                }
+
+
+                // =========================
+                // CAMPOS CS
+                // =========================
+
+                else if (dados.tipo_cto === "CS") {
+
+                    dados.nivel_seguranca =
+                        document.getElementById(
+                            'nivel_seguranca'
+                        ).value;
+
+                    dados.monitoramento =
+                        document.getElementById(
+                            'monitoramento'
+                        ).checked;
+                }
+
+
+                // =========================
+                // ENVIA PARA NODE.JS
+                // =========================
+
+                try {
+
+                    const resposta = await fetch(
+
+                        '/api/contratos/cadastrar',
+
+                        {
+
+                            method: 'POST',
+
+                            headers: {
+                                'Content-Type':
+                                    'application/json'
+                            },
+
+                            body: JSON.stringify(
+                                dados
+                            )
+
+                        }
+
+                    );
+
+
+                    const resultado =
+                        await resposta.json();
+
+
+                    alert(resultado.mensagem);
+
+
+                    formulario.reset();
+
+                    campos.innerHTML = "";
+
+
+                }
+
+                catch (erro) {
+
+                    console.log(erro);
+
+                    alert(
+                        'Erro ao cadastrar contrato'
+                    );
+
+                }
+
+            }
+
+        );
+
+    </script>
+
+</body>
+
+</html>

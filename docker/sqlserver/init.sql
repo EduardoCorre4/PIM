@@ -1,0 +1,78 @@
+IF DB_ID(N'SistemaContratos') IS NULL
+BEGIN
+    CREATE DATABASE SistemaContratos;
+END
+GO
+
+USE SistemaContratos;
+GO
+
+IF OBJECT_ID(N'dbo.CTO', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.CTO (
+        id_cto INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+        empresa NVARCHAR(200) NOT NULL,
+        tipo_contrato CHAR(2) NOT NULL,
+        data_inicio DATE NOT NULL,
+        data_fim DATE NOT NULL,
+        valor DECIMAL(18,2) NOT NULL,
+        status_contrato NVARCHAR(20) NOT NULL,
+        CONSTRAINT CK_CTO_TIPO CHECK (tipo_contrato IN ('SP', 'SI', 'CS')),
+        CONSTRAINT CK_CTO_STATUS CHECK (status_contrato IN ('ATIVO', 'SUSPENSO', 'ENCERRADO'))
+    );
+END
+GO
+
+IF OBJECT_ID(N'dbo.SP', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.SP (
+        id_sp INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+        id_cto INT NOT NULL UNIQUE,
+        sla_horas INT NOT NULL,
+        suporte_24h BIT NOT NULL CONSTRAINT DF_SP_SUPORTE_24H DEFAULT 0,
+        CONSTRAINT FK_SP_CTO FOREIGN KEY (id_cto) REFERENCES dbo.CTO (id_cto) ON DELETE CASCADE
+    );
+END
+GO
+
+IF OBJECT_ID(N'dbo.SI', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.SI (
+        id_si INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+        id_cto INT NOT NULL UNIQUE,
+        quantidade_usuarios INT NOT NULL,
+        possui_backup BIT NOT NULL CONSTRAINT DF_SI_BACKUP DEFAULT 0,
+        CONSTRAINT FK_SI_CTO FOREIGN KEY (id_cto) REFERENCES dbo.CTO (id_cto) ON DELETE CASCADE
+    );
+END
+GO
+
+IF OBJECT_ID(N'dbo.CS', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.CS (
+        id_cs INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+        id_cto INT NOT NULL UNIQUE,
+        nivel_seguranca NVARCHAR(20) NOT NULL,
+        monitoramento BIT NOT NULL CONSTRAINT DF_CS_MONITORAMENTO DEFAULT 0,
+        CONSTRAINT FK_CS_CTO FOREIGN KEY (id_cto) REFERENCES dbo.CTO (id_cto) ON DELETE CASCADE,
+        CONSTRAINT CK_CS_NIVEL CHECK (nivel_seguranca IN ('BAIXO', 'MEDIO', 'ALTO', 'CRITICO'))
+    );
+END
+GO
+
+IF OBJECT_ID(N'dbo.CHAMADO', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.CHAMADO (
+        id_chamado INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+        id_cto INT NOT NULL,
+        titulo NVARCHAR(200) NOT NULL,
+        descricao NVARCHAR(MAX) NOT NULL,
+        prioridade NVARCHAR(20) NOT NULL,
+        status_chamado NVARCHAR(20) NOT NULL CONSTRAINT DF_CHAMADO_STATUS DEFAULT 'ABERTO',
+        data_abertura DATETIME2 NOT NULL CONSTRAINT DF_CHAMADO_DATA DEFAULT SYSDATETIME(),
+        CONSTRAINT FK_CHAMADO_CTO FOREIGN KEY (id_cto) REFERENCES dbo.CTO (id_cto),
+        CONSTRAINT CK_CHAMADO_PRIORIDADE CHECK (prioridade IN ('BAIXA', 'MEDIA', 'ALTA', 'CRITICA')),
+        CONSTRAINT CK_CHAMADO_STATUS CHECK (status_chamado IN ('ABERTO', 'EM ANDAMENTO', 'FECHADO'))
+    );
+END
+GO

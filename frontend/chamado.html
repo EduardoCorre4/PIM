@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Abertura de Chamado</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <h1>Abertura de Chamado para a JKE</h1>
+
+
+    <!-- FORM -->
+    <form id="form-chamado">
+
+
+        <!-- EMPRESA -->
+        <label for="nome">
+            Nome da Empresa
+        </label>
+
+        <input
+            type="text"
+            id="nome"
+            name="nome"
+            placeholder="Digite a razão social da empresa"
+            required
+        >
+
+
+
+        <!-- ID CONTRATO -->
+        <label for="id_cto">
+            ID do Contrato
+        </label>
+
+        <input
+            type="number"
+            id="id_cto"
+            name="id_cto"
+            placeholder="Digite o ID do contrato"
+            min="1"
+            required
+        >
+
+
+
+        <!-- TIPO CONTRATO -->
+        <label for="tipo_cto">
+            Tipo de Contrato
+        </label>
+
+        <select
+            id="tipo_cto"
+            name="tipo_cto"
+            required
+        >
+
+            <option value="">
+                Selecione o tipo de contrato
+            </option>
+
+            <option value="SP">
+                Suporte Técnico
+            </option>
+
+            <option value="SI">
+                Suporte de Infraestrutura
+            </option>
+
+            <option value="CS">
+                Criação de Software
+            </option>
+
+        </select>
+
+
+
+        <!-- TITULO -->
+        <label for="titulo">
+            Título do Chamado
+        </label>
+
+        <input
+            type="text"
+            id="titulo"
+            name="titulo"
+            placeholder="Ex: Sistema fora do ar"
+            required
+        >
+
+
+
+        <!-- DESCRIÇÃO -->
+        <label for="descricao">
+            Descrição do Problema
+        </label>
+
+        <textarea
+            id="descricao"
+            name="descricao"
+            rows="6"
+            placeholder="Descreva o problema detalhadamente"
+            required
+        ></textarea>
+
+
+
+        <!-- PRIORIDADE -->
+        <label for="prioridade">
+            Prioridade
+        </label>
+
+        <select
+            id="prioridade"
+            name="prioridade"
+            required
+        >
+
+            <option value="">
+                Selecione
+            </option>
+
+            <option value="BAIXA">
+                BAIXA
+            </option>
+
+            <option value="MEDIA">
+                MEDIA
+            </option>
+
+            <option value="ALTA">
+                ALTA
+            </option>
+
+            <option value="CRITICA">
+                CRITICA
+            </option>
+
+        </select>
+
+
+
+        <!-- STATUS -->
+        <input
+            type="hidden"
+            id="status_chamado"
+            name="status_chamado"
+            value="ABERTO"
+        >
+
+
+
+        <!-- DATA -->
+        <label for="data_abertura">
+            Data de Abertura
+        </label>
+
+        <input
+            type="datetime-local"
+            id="data_abertura"
+            name="data_abertura"
+            readonly
+        >
+
+
+
+        <!-- BOTÕES -->
+        <div class="submit-buttons">
+
+            <button type="submit">
+                Enviar
+            </button>
+
+            <button type="reset">
+                Limpar
+            </button>
+
+        </div>
+
+    </form>
+
+
+
+    <!-- LOGO -->
+    <figure>
+
+        <img
+            src="imagens/arte logo jke.png"
+            alt="Logo JKE"
+            class="logo"
+        >
+
+    </figure>
+
+
+
+    <!-- ========================= -->
+    <!-- DATA AUTOMÁTICA -->
+    <!-- ========================= -->
+
+    <script>
+
+        const agora = new Date();
+
+        agora.setMinutes(
+            agora.getMinutes() -
+            agora.getTimezoneOffset()
+        );
+
+        document.getElementById(
+            "data_abertura"
+        ).value = agora
+            .toISOString()
+            .slice(0, 16);
+
+    </script>
+
+
+
+    <!-- ========================= -->
+    <!-- ENVIO PARA BACKEND -->
+    <!-- ========================= -->
+
+    <script>
+
+        const formulario =
+            document.getElementById(
+                'form-chamado'
+            );
+
+
+        formulario.addEventListener(
+
+            'submit',
+
+            async function (event) {
+
+                // impede reload
+                event.preventDefault();
+
+
+                // =========================
+                // DADOS
+                // =========================
+
+                const dados = {
+
+                    nome:
+                        document.getElementById(
+                            'nome'
+                        ).value,
+
+                    id_cto:
+                        document.getElementById(
+                            'id_cto'
+                        ).value,
+
+                    tipo_cto:
+                        document.getElementById(
+                            'tipo_cto'
+                        ).value,
+
+                    titulo:
+                        document.getElementById(
+                            'titulo'
+                        ).value,
+
+                    descricao:
+                        document.getElementById(
+                            'descricao'
+                        ).value,
+
+                    prioridade:
+                        document.getElementById(
+                            'prioridade'
+                        ).value,
+
+                    status_chamado:
+                        document.getElementById(
+                            'status_chamado'
+                        ).value,
+
+                    data_abertura:
+                        document.getElementById(
+                            'data_abertura'
+                        ).value
+
+                };
+
+
+                // =========================
+                // ENVIA PARA NODE.JS
+                // =========================
+
+                try {
+
+                    const resposta = await fetch(
+
+                        '/api/chamados/abrir',
+
+                        {
+
+                            method: 'POST',
+
+                            headers: {
+
+                                'Content-Type':
+                                    'application/json'
+
+                            },
+
+                            body: JSON.stringify(
+                                dados
+                            )
+
+                        }
+
+                    );
+
+
+                    const resultado =
+                        await resposta.json();
+
+
+                    // =========================
+                    // SUCESSO
+                    // =========================
+
+                    alert(
+                        resultado.mensagem
+                    );
+
+
+                    formulario.reset();
+
+
+                    // restaura data
+                    const novaData = new Date();
+
+                    novaData.setMinutes(
+                        novaData.getMinutes() -
+                        novaData.getTimezoneOffset()
+                    );
+
+                    document.getElementById(
+                        "data_abertura"
+                    ).value = novaData
+                        .toISOString()
+                        .slice(0, 16);
+
+                }
+
+                catch (erro) {
+
+                    console.log(erro);
+
+                    alert(
+                        'Erro ao abrir chamado'
+                    );
+
+                }
+
+            }
+
+        );
+
+    </script>
+
+</body>
+
+</html>
