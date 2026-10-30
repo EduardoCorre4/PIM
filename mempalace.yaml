@@ -1,0 +1,20 @@
+wing: pim
+rooms:
+- name: backend
+  description: Files from backend/
+  keywords:
+  - backend
+  - backend
+- name: mobile
+  description: Files from mobile/
+  keywords:
+  - mobile
+  - mobile
+- name: frontend
+  description: Files from frontend/
+  keywords:
+  - frontend
+  - frontend
+- name: general
+  description: Files that don't fit other rooms
+  keywords: []

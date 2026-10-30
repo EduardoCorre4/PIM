@@ -1,0 +1,37 @@
+# Ambiente local: SQL Server + API. Defina as variáveis em um arquivo .env (veja .env.example).
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${SA_PASSWORD}
+    ports: ["1433:1433"]
+    volumes: [sqldata:/var/opt/mssql]
+
+  api:
+    build: ./backend
+    depends_on: [db]
+    ports: ["8080:8080"]
+    environment:
+      ConnectionStrings__Default: "Server=db,1433;Database=JakeDb;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=True"
+      Jwt__Key: ${JWT_KEY}
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}  # Development habilita o Swagger
+      Database__MigrateOnStartup: "true"
+      SeedGerente__Email: ${SEED_GERENTE_EMAIL}
+      SeedGerente__Senha: ${SEED_GERENTE_SENHA}
+      SeedFuncionario__Email: ${SEED_FUNCIONARIO_EMAIL:-func@jake.local}
+      SeedFuncionario__Senha: ${SEED_FUNCIONARIO_SENHA:-Func@12345}
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        VITE_DEMO_GERENTE_EMAIL: ${SEED_GERENTE_EMAIL}
+        VITE_DEMO_GERENTE_SENHA: ${SEED_GERENTE_SENHA}
+        VITE_DEMO_FUNCIONARIO_EMAIL: ${SEED_FUNCIONARIO_EMAIL:-func@jake.local}
+        VITE_DEMO_FUNCIONARIO_SENHA: ${SEED_FUNCIONARIO_SENHA:-Func@12345}
+    depends_on: [api]
+    ports: ["3000:8080"]   # painel web em http://localhost:3000
+
+volumes:
+  sqldata:

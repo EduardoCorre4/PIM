@@ -1,0 +1,45 @@
+server {
+  listen 8080;
+  server_tokens off;
+  root /usr/share/nginx/html;
+  client_max_body_size 1m;
+
+  gzip on;
+  gzip_types text/css application/javascript application/json image/svg+xml;
+
+  # Verificação de saúde para o balanceador/orquestrador.
+  location = /healthz {
+    access_log off;
+    default_type text/plain;
+    return 200 "ok";
+  }
+
+  # A API é acessada pelo mesmo endereço do site: sem CORS.
+  location /api/ {
+    include /etc/nginx/snippets/security-headers.conf;
+    proxy_pass ${API_UPSTREAM};
+    # A API já envia estes cabeçalhos; o snippet acima os define uma vez só.
+    proxy_hide_header X-Content-Type-Options;
+    proxy_hide_header X-Frame-Options;
+    proxy_hide_header Referrer-Policy;
+    # Cabeçalho Host enviado à API: defina API_HOST_HEADER se o roteamento depender dele.
+    proxy_set_header Host ${API_HOST_HEADER};
+    proxy_set_header X-Forwarded-For $remote_addr;
+    proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+    proxy_read_timeout 30s;
+  }
+
+  # Arquivos com hash no nome: podem ficar em cache por muito tempo.
+  location /assets/ {
+    include /etc/nginx/snippets/security-headers.conf;
+    add_header Cache-Control "public, max-age=31536000, immutable" always;
+    try_files $uri =404;
+  }
+
+  # Páginas do app (SPA): nunca em cache, para atualizações chegarem na hora.
+  location / {
+    include /etc/nginx/snippets/security-headers.conf;
+    add_header Cache-Control "no-cache" always;
+    try_files $uri /index.html;
+  }
+}

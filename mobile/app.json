@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "JAKE Chamados",
+    "slug": "jake-chamados",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "android": {
+      "package": "br.com.jake.chamados"
+    },
+    "ios": {
+      "bundleIdentifier": "br.com.jake.chamados"
+    },
+    "plugins": [
+      "expo-secure-store"
+    ],
+    "extra": {}
+  }
+}
