@@ -7,7 +7,7 @@ import { createCache, type Cache } from '../core/cache';
 import { ApiError, createHttp } from '../core/http';
 import { createOutbox, type Outbox } from '../core/outbox';
 import { createSync, type Sync } from '../core/sync';
-import type { Chamado, ChamadoPendente, Contrato, NovoChamado } from '../core/types';
+import type { Chamado, ChamadoDetalhe, ChamadoPendente, Contrato, NovoChamado } from '../core/types';
 import { API_URL } from '../config';
 import { dataKV, sessionStore } from '../platform/storage';
 
@@ -31,6 +31,8 @@ interface Ctx {
   sair(): Promise<void>;
   atualizar(): Promise<void>;
   alterarStatus(id: number, status: number): Promise<void>;
+  carregarConversa(id: number): Promise<ChamadoDetalhe>;
+  enviarMensagem(id: number, conteudo: string): Promise<void>;
   abrirChamado(n: NovoChamado): Promise<ResultadoAbertura>;
   tentarDeNovo(localId: string): Promise<void>;
   descartar(localId: string): Promise<void>;
@@ -144,6 +146,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
         await s.cache.gravar({ ...c, chamados: c.chamados.map(x => (x.id === id ? { ...x, status: novo.status } : x)) });
       }
       await recarregar();
+    },
+
+    carregarConversa: id => api.chamado(id),
+    async enviarMensagem(id, conteudo) {
+      await api.enviarMensagem(id, conteudo);
+      await recarregar(); // o servidor pode ter mudado a situação (Aberto -> Em atendimento)
     },
 
     async abrirChamado(n) {

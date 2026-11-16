@@ -1,8 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import { useMemo, useState } from 'react';
+import { Plus } from 'lucide-react-native';
 import { Alert, FlatList, Pressable, RefreshControl, Text, View } from 'react-native';
 import { BarraConexao } from '../components/BarraConexao';
-import { Botao, Cartao, Selo, SeloFila, cor } from '../components/ui';
+import { Botao, Cartao, Selo, SeloFila, codigoChamado, cor, tx } from '../components/ui';
+import { fonte, paleta } from '../theme';
 import { SITUACAO_CHAMADO, formatarDataHora } from '../core/regras';
 import { useApp } from '../state/AppContext';
 
@@ -29,9 +31,9 @@ export function Chamados() {
         {FILTROS.map(f => (
           <Pressable key={f} accessibilityRole="radio" accessibilityState={{ selected: filtro === f }}
             accessibilityLabel={f ? SITUACAO_CHAMADO[f] : 'Todos'} onPress={() => setFiltro(f)}
-            style={{ minHeight: 44, justifyContent: 'center', paddingHorizontal: 14, borderRadius: 22, borderWidth: 2, borderColor: cor.primaria,
+            style={{ minHeight: 48, justifyContent: 'center', paddingHorizontal: 16, borderRadius: 24, borderWidth: 1.5, borderColor: filtro === f ? cor.primaria : paleta.neutro400,
               backgroundColor: filtro === f ? cor.primaria : cor.fundo }}>
-            <Text style={{ fontWeight: '700', fontSize: 15, color: filtro === f ? '#fff' : cor.primaria }}>{f ? SITUACAO_CHAMADO[f] : 'Todos'}</Text>
+            <Text allowFontScaling style={{ fontFamily: fonte.textoSemi, fontSize: 14, color: filtro === f ? '#fff' : cor.texto }}>{f ? SITUACAO_CHAMADO[f] : 'Todos'}</Text>
           </Pressable>
         ))}
       </View>
@@ -41,35 +43,36 @@ export function Chamados() {
         keyExtractor={d => (d.tipo === 'fila' ? `l-${d.p.localId}` : `c-${d.c.id}`)}
         contentContainerStyle={{ padding: 12 }}
         refreshControl={<RefreshControl refreshing={sincronizando} onRefresh={atualizar} />}
-        ListEmptyComponent={<Text style={{ fontSize: 16, color: cor.suave, padding: 12 }}>
+        ListEmptyComponent={<Text allowFontScaling style={[tx.suave, { padding: 12, fontSize: 16 }]}>
           {filtro ? 'Nenhum chamado com essa situação.' : atendente ? 'Não há chamados na fila.' : 'Você ainda não abriu nenhum chamado.'}</Text>}
         renderItem={({ item }) => item.tipo === 'chamado' ? (
           <Pressable accessibilityRole="button"
             accessibilityLabel={`${item.c.titulo}. ${SITUACAO_CHAMADO[item.c.status]}. Aberto em ${formatarDataHora(item.c.dataAbertura)}`}
             onPress={() => nav.navigate('DetalheChamado', { id: item.c.id })}>
             <Cartao>
-              <Text style={{ fontSize: 17, fontWeight: '700', color: cor.texto, marginBottom: 4 }}>{item.c.titulo}</Text>
-              <Text style={{ color: cor.suave, marginBottom: 6 }}>{atendente && item.c.clienteNome ? `${item.c.clienteNome} · ` : ''}Contrato {item.c.contratoNumero} · {formatarDataHora(item.c.dataAbertura)}</Text>
+              <Text allowFontScaling style={[tx.mono, { fontSize: 12, color: cor.suave }]}>{codigoChamado(item.c.id)}</Text>
+              <Text allowFontScaling style={{ fontFamily: fonte.textoSemi, fontSize: 16, color: cor.texto, marginBottom: 4 }}>{item.c.titulo}</Text>
+              <Text allowFontScaling style={[tx.suave, { marginBottom: 8 }]}>{atendente && item.c.clienteNome ? `${item.c.clienteNome} · ` : ''}Contrato {item.c.contratoNumero} · {formatarDataHora(item.c.dataAbertura)}</Text>
               <Selo situacao={item.c.status} />
             </Cartao>
           </Pressable>
         ) : (
           <Cartao>
-            <Text style={{ fontSize: 17, fontWeight: '700', color: cor.texto, marginBottom: 4 }}>{item.p.titulo}</Text>
-            <Text style={{ color: cor.suave, marginBottom: 6 }}>Contrato {item.p.contratoNumero} · criado em {formatarDataHora(item.p.criadoEm)}</Text>
+            <Text allowFontScaling style={{ fontFamily: fonte.textoSemi, fontSize: 16, color: cor.texto, marginBottom: 4 }}>{item.p.titulo}</Text>
+            <Text allowFontScaling style={[tx.suave, { marginBottom: 8 }]}>Contrato {item.p.contratoNumero} · criado em {formatarDataHora(item.p.criadoEm)}</Text>
             <SeloFila falhou={item.p.estado === 'falhou'} />
             {item.p.estado === 'falhou' ? (
               <View style={{ marginTop: 10 }}>
-                <Text style={{ color: cor.erro, fontWeight: '600', marginBottom: 8 }}>{item.p.erro}</Text>
+                <Text allowFontScaling style={{ fontFamily: fonte.textoSemi, color: cor.erro, marginBottom: 8 }}>{item.p.erro}</Text>
                 <Botao variante="secundario" rotulo="Tentar de novo" onPress={() => void tentarDeNovo(item.p.localId)} />
                 <Botao variante="perigo" rotulo="Descartar" onPress={() => Alert.alert('Descartar chamado?', 'Ele não será enviado.', [
                   { text: 'Manter', style: 'cancel' }, { text: 'Descartar', style: 'destructive', onPress: () => void descartar(item.p.localId) }])} />
               </View>
-            ) : <Text style={{ color: cor.avisoTexto, marginTop: 6 }}>Será enviado assim que houver internet.</Text>}
+            ) : <Text allowFontScaling style={{ fontFamily: fonte.texto, color: cor.avisoTexto, marginTop: 8 }}>Será enviado assim que houver internet.</Text>}
           </Cartao>
         )}
       />
-      {!atendente && <View style={{ padding: 12 }}><Botao rotulo="Abrir novo chamado" onPress={() => nav.navigate('NovoChamado')} /></View>}
+      {!atendente && <View style={{ padding: 12 }}><Botao rotulo="Abrir chamado" icone={<Plus size={20} color="#fff" strokeWidth={2} />} onPress={() => nav.navigate('NovoChamado')} /></View>}
     </View>
   );
 }

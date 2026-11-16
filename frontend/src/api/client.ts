@@ -1,4 +1,4 @@
-import type { AuthResponse, Chamado, ContratoCliente, Contrato, ContratoInput, Indicadores, RelatorioResumo, Usuario } from './types';
+import type { AuthResponse, Chamado, ChamadoDetalhe, MensagemChamado, ContratoCliente, Contrato, ContratoInput, Indicadores, RelatorioResumo, Usuario } from './types';
 
 export class ApiError extends Error {
   constructor(message: string, public status: number) { super(message); }
@@ -86,6 +86,9 @@ export const api = {
     baixar(`/relatorios/chamados${qs({ ...f, formato: 'csv' })}`, 'chamados.csv'),
   baixarContratosCsv: (f: { venceEmDias?: number }) =>
     baixar(`/relatorios/contratos${qs({ ...f, formato: 'csv' })}`, 'contratos.csv'),
+  chamado: (id: number) => request<ChamadoDetalhe>(`/chamados/${id}`),
+  enviarMensagem: (id: number, conteudo: string) =>
+    request<MensagemChamado>(`/chamados/${id}/mensagens`, { method: 'POST', body: json({ conteudo }) }),
   alterarStatusChamado: (id: number, status: number) =>
     request<Chamado>(`/chamados/${id}/status`, { method: 'PATCH', body: json({ status }) }),
 };

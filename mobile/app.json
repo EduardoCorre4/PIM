@@ -6,14 +6,24 @@
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "android": {
-      "package": "br.com.jake.chamados"
+      "package": "br.com.jake.chamados",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon-foreground.png",
+        "backgroundColor": "#2B4EEA"
+      }
     },
     "ios": {
       "bundleIdentifier": "br.com.jake.chamados"
     },
     "plugins": [
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-font"
     ],
-    "extra": {}
+    "extra": {},
+    "icon": "./assets/app-icon-1024.png",
+    "backgroundColor": "#F6F7FB",
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
   }
 }

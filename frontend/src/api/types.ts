@@ -13,6 +13,10 @@ export interface Chamado {
   id: number; titulo: string; descricao: string; status: StatusChamado; dataAbertura: string;
   contratoId: number; contratoNumero: string | null; clienteId: number; clienteNome: string | null;
 }
+export interface MensagemChamado {
+  id: number; chamadoId: number; autorId: number; autorNome: string; autorPerfil: number; conteudo: string; dataEnvio: string;
+}
+export interface ChamadoDetalhe extends Chamado { mensagens: MensagemChamado[] }
 export interface ItemContagem { rotulo: string; total: number }
 export interface RelatorioResumo {
   de: string; ate: string; totalChamados: number;

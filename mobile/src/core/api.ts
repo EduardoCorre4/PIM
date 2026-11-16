@@ -1,5 +1,5 @@
 import { sessaoDe, type AuthPayload, type Http, type SessionStore } from './http';
-import type { Chamado, Contrato } from './types';
+import type { Chamado, ChamadoDetalhe, Contrato, MensagemChamado } from './types';
 
 export const PERFIL_CLIENTE = 1;
 export const PERFIL_FUNCIONARIO = 2;
@@ -29,6 +29,10 @@ export function createApi(http: Http, store: SessionStore) {
     meusChamados: () => http.request<Chamado[]>('/chamados/meus'),
     /** Fila de atendimento (Funcionário/Gerente). */
     fila: () => http.request<Chamado[]>('/chamados'),
+    /** Detalhe com o histórico de mensagens (conversa assíncrona). */
+    chamado: (id: number) => http.request<ChamadoDetalhe>(`/chamados/${id}`),
+    enviarMensagem: (id: number, conteudo: string) =>
+      http.request<MensagemChamado>(`/chamados/${id}/mensagens`, { method: 'POST', body: { conteudo } }),
     alterarStatus: (id: number, status: number) =>
       http.request<Chamado>(`/chamados/${id}/status`, { method: 'PATCH', body: { status } }),
     abrirChamado: (i: AbrirChamadoInput) => http.request<Chamado>('/chamados', { method: 'POST', body: i }),

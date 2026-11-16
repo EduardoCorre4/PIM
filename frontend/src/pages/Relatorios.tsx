@@ -5,16 +5,17 @@ import { useAnunciar } from '../components/Announcer';
 import { Distribuicao } from '../components/Distribuicao';
 import { Field } from '../components/Field';
 import { usePageTitle } from '../components/usePageTitle';
-import { SITUACAO_CHAMADO, formatarData, formatarDataHora } from '../labels';
+import { SITUACAO_CHAMADO, codigoChamado, formatarData, formatarDataHora } from '../labels';
+import { BadgeChamado } from '../components/Badge';
 
 const hoje = () => new Date().toISOString().slice(0, 10);
 const diasAtras = (n: number) => new Date(Date.now() - n * 864e5).toISOString().slice(0, 10);
 
 function Numero({ valor, rotulo, alerta }: { valor: number; rotulo: string; alerta?: boolean }) {
   return (
-    <div className="cartao numero">
-      <p className="numero-valor">{valor}</p>
-      <p>{rotulo}{alerta && valor > 0 ? ' — atenção' : ''}</p>
+    <div className={`jk-card jk-kpi numero${alerta && valor > 0 ? ' numero-alerta' : ''}`}>
+      <span className="jk-kpi__valor">{valor}</span>
+      <span className="jk-kpi__rotulo">{rotulo}{alerta && valor > 0 ? ' — atenção' : ''}</span>
     </div>
   );
 }
@@ -114,8 +115,8 @@ export function Relatorios() {
                 <thead><tr><th scope="col">Nº</th><th scope="col">Assunto</th><th scope="col">Cliente</th><th scope="col">Contrato</th><th scope="col">Aberto em</th><th scope="col">Situação</th></tr></thead>
                 <tbody>
                   {lista.map(c => (
-                    <tr key={c.id}><td>{c.id}</td><td>{c.titulo}</td><td>{c.clienteNome}</td><td>{c.contratoNumero}</td>
-                      <td>{formatarDataHora(c.dataAbertura)}</td><td>{SITUACAO_CHAMADO[c.status]}</td></tr>
+                    <tr key={c.id}><td className="jk-mono">{codigoChamado(c.id)}</td><td>{c.titulo}</td><td>{c.clienteNome}</td><td className="jk-mono">{c.contratoNumero}</td>
+                      <td>{formatarDataHora(c.dataAbertura)}</td><td><BadgeChamado status={c.status} /></td></tr>
                   ))}
                 </tbody>
               </table>

@@ -15,6 +15,7 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
             {
                 RegraNegocioException => (StatusCodes.Status400BadRequest, ex.Message),
                 NaoEncontradoException => (StatusCodes.Status404NotFound, ex.Message),
+                AcessoNegadoException => (StatusCodes.Status403Forbidden, ex.Message),
                 NaoAutorizadoException => (StatusCodes.Status401Unauthorized, ex.Message),
                 _ => (StatusCodes.Status500InternalServerError, "Erro interno do servidor.")
             };

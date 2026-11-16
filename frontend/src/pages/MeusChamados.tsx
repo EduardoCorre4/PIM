@@ -1,10 +1,12 @@
 import { useEffect, useId, useMemo, useRef, useState, type FormEvent } from 'react';
+import { Link } from 'react-router-dom';
 import { api } from '../api/client';
 import type { Chamado, ContratoCliente } from '../api/types';
 import { useAnunciar } from '../components/Announcer';
 import { Field } from '../components/Field';
 import { usePageTitle } from '../components/usePageTitle';
-import { SITUACAO_CHAMADO, formatarDataHora } from '../labels';
+import { SITUACAO_CHAMADO, codigoChamado, formatarDataHora } from '../labels';
+import { BadgeChamado } from '../components/Badge';
 
 const hoje = () => new Date().toISOString().slice(0, 10);
 /** Mesma regra do servidor: só se abre chamado em contrato ATIVO e dentro da vigência. */
@@ -65,7 +67,7 @@ export function MeusChamados() {
     <>
       <h1>Meus chamados</h1>
 
-      <section className="cartao" aria-labelledby="t-abrir">
+      <section className="jk-card" aria-labelledby="t-abrir">
         <h2 id="t-abrir">Abrir novo chamado</h2>
         {contratos.length > 0 && elegiveis.length === 0 && (
           <p className="nota">Você não tem contrato ativo e dentro da vigência. Fale com a JAKE Tecnologia.</p>
@@ -108,13 +110,14 @@ export function MeusChamados() {
           <table>
             <caption className="so-leitor">Seus chamados</caption>
             <thead>
-              <tr><th scope="col">Nº</th><th scope="col">Assunto</th><th scope="col">Contrato</th><th scope="col">Aberto em</th><th scope="col">Situação</th></tr>
+              <tr><th scope="col">Nº</th><th scope="col">Assunto</th><th scope="col">Contrato</th><th scope="col">Aberto em</th><th scope="col">Situação</th><th scope="col">Conversa</th></tr>
             </thead>
             <tbody>
               {visiveis.map(c => (
                 <tr key={c.id}>
-                  <td>{c.id}</td><td>{c.titulo}</td><td>{c.contratoNumero}</td>
-                  <td>{formatarDataHora(c.dataAbertura)}</td><td>{SITUACAO_CHAMADO[c.status]}</td>
+                  <td className="jk-mono">{codigoChamado(c.id)}</td><td><Link to={`/chamados/${c.id}`}>{c.titulo}</Link></td><td className="jk-mono">{c.contratoNumero}</td>
+                  <td>{formatarDataHora(c.dataAbertura)}</td><td><BadgeChamado status={c.status} /></td>
+                  <td><Link className="jk-btn jk-btn--secundario" to={`/chamados/${c.id}`} aria-label={`Abrir conversa do chamado ${codigoChamado(c.id)}`}>Abrir conversa</Link></td>
                 </tr>
               ))}
             </tbody>

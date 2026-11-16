@@ -146,6 +146,43 @@ namespace Jake.Repository.Migrations
                     b.ToTable("LOG_ACESSO", (string)null);
                 });
 
+            modelBuilder.Entity("Jake.Domain.Entities.MensagemChamado", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AutorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AutorNome")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("AutorPerfil")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ChamadoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Conteudo")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<DateTime>("DataEnvio")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChamadoId", "DataEnvio");
+
+                    b.ToTable("MENSAGEM_CHAMADO", (string)null);
+                });
+
             modelBuilder.Entity("Jake.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<int>("Id")
@@ -261,6 +298,17 @@ namespace Jake.Repository.Migrations
                     b.Navigation("Usuario");
                 });
 
+            modelBuilder.Entity("Jake.Domain.Entities.MensagemChamado", b =>
+                {
+                    b.HasOne("Jake.Domain.Entities.Chamado", "Chamado")
+                        .WithMany("Mensagens")
+                        .HasForeignKey("ChamadoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chamado");
+                });
+
             modelBuilder.Entity("Jake.Domain.Entities.RefreshToken", b =>
                 {
                     b.HasOne("Jake.Domain.Entities.Usuario", "Usuario")
@@ -270,6 +318,11 @@ namespace Jake.Repository.Migrations
                         .IsRequired();
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Jake.Domain.Entities.Chamado", b =>
+                {
+                    b.Navigation("Mensagens");
                 });
 
             modelBuilder.Entity("Jake.Domain.Entities.Contrato", b =>

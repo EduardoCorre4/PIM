@@ -1,9 +1,11 @@
 import { useRef, useState, type FormEvent } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
+import { ArrowLeft, LogIn } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import { paginaInicial } from '../labels';
 import { Field } from '../components/Field';
-import { BarraAcessibilidade } from '../components/Layout';
+import { BarraAcessibilidade, RodapeApp } from '../components/Layout';
+import { Logo } from '../components/Logo';
 import { usePageTitle } from '../components/usePageTitle';
 
 export function Login() {
@@ -43,27 +45,37 @@ export function Login() {
   }
 
   return (
-    <>
-      <a className="pular" href="#entrar">Ir para o formulário de entrada</a>
-      <header className="topo"><p className="marca">JAKE Tecnologia</p><BarraAcessibilidade /></header>
-      <main id="entrar" className="login">
-        <h1>Entrar no portal</h1>
-        <p>Use o e-mail e a senha que você recebeu. Clientes, funcionários e gerentes entram por aqui.</p>
-        {erroGeral && <p role="alert" className="erro-geral">{erroGeral}</p>}
-        <form onSubmit={enviar} noValidate>
-          <Field rotulo="E-mail" erro={erros.email} obrigatorio>
-            {p => <input {...p} ref={refEmail} type="email" autoComplete="username" value={email}
-              onChange={e => setEmail(e.target.value)} />}
-          </Field>
-          <Field rotulo="Senha" erro={erros.senha} obrigatorio>
-            {p => <input {...p} ref={refSenha} type="password" autoComplete="current-password" value={senha}
-              onChange={e => setSenha(e.target.value)} />}
-          </Field>
-          <button type="submit" className="primario" disabled={enviando}>
-            {enviando ? 'Entrando…' : 'Entrar'}
-          </button>
-        </form>
+    <div className="pagina-publica">
+      <a className="jk-pular" href="#entrar">Pular para o formulário de entrada</a>
+      <div className="jk-cabecalho-ctn">
+        <header className="jk-cabecalho">
+          <a className="jk-cabecalho__logo" href="/" aria-label="JAKE Tecnologia — início"><Logo tipo="horizontal" /></a>
+          <div className="cab-acess"><BarraAcessibilidade /></div>
+        </header>
+      </div>
+      <main id="entrar" tabIndex={-1} className="login">
+        <div className="jk-card login__cartao">
+          <Logo tipo="vertical" alt="JAKE Tecnologia" className="login__logo" />
+          <h1>Entrar no portal</h1>
+          <p className="sub">Use o e-mail e a senha que você recebeu. Clientes, funcionários e gerentes entram por aqui.</p>
+          {erroGeral && <p role="alert" className="erro-geral">{erroGeral}</p>}
+          <form onSubmit={enviar} noValidate>
+            <Field rotulo="E-mail" erro={erros.email} obrigatorio>
+              {p => <input {...p} ref={refEmail} type="email" autoComplete="username" value={email}
+                onChange={e => setEmail(e.target.value)} />}
+            </Field>
+            <Field rotulo="Senha" erro={erros.senha} obrigatorio>
+              {p => <input {...p} ref={refSenha} type="password" autoComplete="current-password" value={senha}
+                onChange={e => setSenha(e.target.value)} />}
+            </Field>
+            <button type="submit" className="primario jk-btn--bloco" disabled={enviando}>
+              <LogIn className="jk-icone" aria-hidden="true" />{enviando ? 'Entrando…' : 'Entrar'}
+            </button>
+          </form>
+          <p className="login__voltar"><Link to="/"><ArrowLeft className="jk-icone" aria-hidden="true" />Voltar para o início</Link></p>
+        </div>
       </main>
-    </>
+      <RodapeApp />
+    </div>
   );
 }

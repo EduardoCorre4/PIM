@@ -1,0 +1,183 @@
+/* ==========================================================================
+   JAKE Tecnologia — Design tokens (web)
+   Fonte única de cores, tipografia, espaçamento e elevação.
+   Espelhado em mobile/theme.ts para o app React Native.
+   ========================================================================== */
+
+:root {
+  /* ---------- Cores de marca ---------- */
+  --jk-azul-50: #EEF2FF;
+  --jk-azul-100: #DDE5FF;
+  --jk-azul-200: #BCCBFF;
+  --jk-azul-300: #92A8FF;
+  --jk-azul-400: #5F7CF7;
+  --jk-azul-500: #3D5EF0;
+  --jk-azul-600: #2B4EEA; /* Azul JAKE — cor principal */
+  --jk-azul-700: #1F3BC4;
+  --jk-azul-800: #182E96;
+  --jk-azul-900: #13246F;
+
+  --jk-ipe-100: #FFF3D1;
+  --jk-ipe-300: #FFD970;
+  --jk-ipe-500: #FFC233; /* Amarelo Ipê — destaque (sempre com texto Noite) */
+  --jk-ipe-700: #B87A00;
+
+  /* ---------- Neutros (levemente azulados) ---------- */
+  --jk-neutro-0: #FFFFFF;
+  --jk-neutro-50: #F6F7FB;
+  --jk-neutro-100: #ECEEF5;
+  --jk-neutro-200: #DADDE8;
+  --jk-neutro-300: #BDC2D3;
+  --jk-neutro-400: #8C93AB;
+  --jk-neutro-500: #666E88;
+  --jk-neutro-600: #4A5169;
+  --jk-neutro-700: #343A50;
+  --jk-neutro-800: #1F2438;
+  --jk-neutro-900: #0E1530; /* Noite — texto e fundos escuros */
+
+  /* ---------- Feedback ---------- */
+  --jk-sucesso: #12805C;
+  --jk-sucesso-fundo: #D6F3E6;
+  --jk-sucesso-texto: #0B5C41;
+  --jk-alerta: #B45309;
+  --jk-alerta-fundo: #FFEFC7;
+  --jk-alerta-texto: #7A4A00;
+  --jk-erro: #C62828;
+  --jk-erro-fundo: #FDE0E0;
+  --jk-erro-texto: #9B1C1C;
+  --jk-info: #2B4EEA;
+  --jk-info-fundo: #DDE5FF;
+  --jk-info-texto: #182E96;
+
+  /* ---------- Tipos de contrato (SP, SI, CS) ---------- */
+  --jk-contrato-suporte: #2B4EEA;
+  --jk-contrato-sistema: #7C3AED;
+  --jk-contrato-cloud: #0F766E;
+
+  /* ---------- Papéis semânticos (use estes nos componentes) ---------- */
+  --jk-fundo: var(--jk-neutro-50);
+  --jk-superficie: var(--jk-neutro-0);
+  --jk-superficie-2: var(--jk-neutro-100);
+  --jk-texto: var(--jk-neutro-900);
+  --jk-texto-suave: var(--jk-neutro-500);
+  --jk-borda: var(--jk-neutro-200);
+  --jk-borda-forte: var(--jk-neutro-400);
+  --jk-primaria: var(--jk-azul-600);
+  --jk-primaria-hover: var(--jk-azul-700);
+  --jk-primaria-suave: var(--jk-azul-50);
+  --jk-sobre-primaria: #FFFFFF;
+  --jk-destaque: var(--jk-ipe-500);
+  --jk-sobre-destaque: var(--jk-neutro-900);
+  --jk-link: var(--jk-azul-700);
+  --jk-foco: 0 0 0 0.1875rem var(--jk-superficie), 0 0 0 0.375rem var(--jk-azul-400);
+
+  /* ---------- Tipografia ---------- */
+  --jk-fonte-titulo: "Sora", "Segoe UI", system-ui, sans-serif;
+  --jk-fonte-texto: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  --jk-fonte-mono: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+
+  /* Escala em rem: respeita o tamanho de fonte ajustável pelo usuário */
+  --jk-texto-xs: 0.75rem;   /* 12 — legendas, badges */
+  --jk-texto-sm: 0.875rem;  /* 14 — apoio, tabelas */
+  --jk-texto-md: 1rem;      /* 16 — corpo */
+  --jk-texto-lg: 1.125rem;  /* 18 — destaque de corpo */
+  --jk-texto-xl: 1.375rem;  /* 22 — H3 */
+  --jk-texto-2xl: 1.75rem;  /* 28 — H2 */
+  --jk-texto-3xl: 2.25rem;  /* 36 — H1 */
+  --jk-texto-4xl: 3rem;     /* 48 — display */
+
+  --jk-linha-compacta: 1.2;
+  --jk-linha-texto: 1.55;
+
+  /* ---------- Espaçamento (base 0.25rem) ---------- */
+  --jk-esp-1: 0.25rem;
+  --jk-esp-2: 0.5rem;
+  --jk-esp-3: 0.75rem;
+  --jk-esp-4: 1rem;
+  --jk-esp-5: 1.5rem;
+  --jk-esp-6: 2rem;
+  --jk-esp-7: 3rem;
+  --jk-esp-8: 4rem;
+
+  /* ---------- Forma ---------- */
+  --jk-raio-sm: 0.375rem;
+  --jk-raio-md: 0.625rem;
+  --jk-raio-lg: 1rem;
+  --jk-raio-xl: 1.5rem;
+  --jk-raio-pill: 62.4375rem;
+
+  /* ---------- Elevação ---------- */
+  --jk-sombra-1: 0 1px 2px rgba(14, 21, 48, 0.06), 0 1px 0.1875rem rgba(14, 21, 48, 0.08);
+  --jk-sombra-2: 0 0.25rem 0.75rem rgba(14, 21, 48, 0.08), 0 2px 0.25rem rgba(14, 21, 48, 0.06);
+  --jk-sombra-3: 0 1rem 2.5rem rgba(14, 21, 48, 0.14);
+
+  /* ---------- Layout ---------- */
+  --jk-largura-conteudo: 75rem;
+  --jk-altura-cabecalho: 4rem;
+  --jk-largura-menu: 15.5rem;
+  --jk-alvo-toque: 2.75rem; /* área mínima de toque/clique */
+
+  /* Breakpoints (referência; CSS não aceita variável em @media)
+     mobile  < 40rem | tablet 640–63.9375rem | desktop >= 64rem | amplo >= 90rem */
+
+  --jk-transicao: 160ms ease;
+}
+
+/* ---------- Tema escuro ---------- */
+:root[data-tema='escuro'] {
+  --jk-fundo: #0B1024;
+  --jk-superficie: #141A33;
+  --jk-superficie-2: #1C2342;
+  --jk-texto: #ECEEF5;
+  --jk-texto-suave: #A3AAC2;
+  --jk-borda: #2A3154;
+  --jk-borda-forte: #666E88;
+  --jk-primaria: var(--jk-azul-300);
+  --jk-primaria-hover: var(--jk-azul-200);
+  --jk-primaria-suave: #1B2550;
+  --jk-sobre-primaria: var(--jk-neutro-900);
+  --jk-link: var(--jk-azul-300);
+
+  --jk-sucesso-fundo: #0F3B2D;
+  --jk-sucesso-texto: #8FE3C0;
+  --jk-alerta-fundo: #45300A;
+  --jk-alerta-texto: #FFD970;
+  --jk-erro-fundo: #4A1717;
+  --jk-erro-texto: #FFB4B4;
+  --jk-info-fundo: #1B2550;
+  --jk-info-texto: #BCCBFF;
+
+  --jk-sombra-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --jk-sombra-2: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.45);
+  --jk-sombra-3: 0 1rem 2.5rem rgba(0, 0, 0, 0.55);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --jk-transicao: 0ms; }
+}
+
+/* ---------- Alto contraste: sobrescreve todos os papéis semânticos --jk-* ---------- */
+:root[data-tema='contraste'] {
+  --jk-fundo: #000000;
+  --jk-superficie: #000000;
+  --jk-superficie-2: #000000;
+  --jk-texto: #FFFFFF;
+  --jk-texto-suave: #FFFFFF;
+  --jk-borda: #FFFFFF;
+  --jk-borda-forte: #FFFFFF;
+  --jk-primaria: #FFFF00;
+  --jk-primaria-hover: #FFFFFF;
+  --jk-primaria-suave: #000000;
+  --jk-sobre-primaria: #000000;
+  --jk-destaque: #FFFF00;
+  --jk-sobre-destaque: #000000;
+  --jk-link: #FFFF00;
+  --jk-foco: 0 0 0 3px #000000, 0 0 0 6px #00E5FF;
+  --jk-erro: #FFB3B3;
+  --jk-sucesso-fundo: #000000; --jk-sucesso-texto: #FFFFFF; --jk-sucesso: #FFFFFF;
+  --jk-alerta-fundo: #000000;  --jk-alerta-texto: #FFFFFF;  --jk-alerta: #FFFFFF;
+  --jk-erro-fundo: #000000;    --jk-erro-texto: #FFB3B3;
+  --jk-info-fundo: #000000;    --jk-info-texto: #FFFFFF;    --jk-info: #FFFFFF;
+  --jk-contrato-suporte: #FFFFFF; --jk-contrato-sistema: #FFFFFF; --jk-contrato-cloud: #FFFFFF;
+  --jk-sombra-1: none; --jk-sombra-2: none; --jk-sombra-3: none;
+}

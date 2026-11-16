@@ -15,6 +15,17 @@ public record ChamadoResponse(
     int Id, string Titulo, string Descricao, StatusChamado Status, DateTime DataAbertura,
     int ContratoId, string? ContratoNumero, int ClienteId, string? ClienteNome);
 
+public record EnviarMensagemRequest([Required, StringLength(2000, MinimumLength = 1)] string Conteudo);
+
+public record MensagemChamadoResponse(
+    int Id, int ChamadoId, int AutorId, string AutorNome, PerfilUsuario AutorPerfil, string Conteudo, DateTime DataEnvio);
+
+/// <summary>Detalhe do chamado + histórico ordenado do mais antigo para o mais novo.</summary>
+public record ChamadoDetalheResponse(
+    int Id, string Titulo, string Descricao, StatusChamado Status, DateTime DataAbertura,
+    int ContratoId, string? ContratoNumero, int ClienteId, string? ClienteNome,
+    List<MensagemChamadoResponse> Mensagens);
+
 public record AtualizarStatusContratoRequest(StatusContrato Status);
 
 public record IndicadoresResponse(

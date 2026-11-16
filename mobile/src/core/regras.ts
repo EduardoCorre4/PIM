@@ -18,4 +18,4 @@ export const formatarData = (iso: string) => dia(iso).split('-').reverse().join(
 export const formatarDataHora = (iso: string) =>
   new Date(iso.endsWith('Z') ? iso : `${iso}Z`).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
 
-export const SITUACAO_CHAMADO: Record<number, string> = { 1: 'Aberto', 2: 'Em andamento', 3: 'Resolvido', 4: 'Fechado' };
+export const SITUACAO_CHAMADO: Record<number, string> = { 1: 'Aberto', 2: 'Em atendimento', 3: 'Resolvido', 4: 'Fechado' };

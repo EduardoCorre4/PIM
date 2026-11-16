@@ -5,6 +5,7 @@ import { AnnouncerProvider } from './components/Announcer';
 import { Layout } from './components/Layout';
 import { Landing } from './pages/Landing';
 import { Chamados } from './pages/Chamados';
+import { DetalheChamado } from './pages/DetalheChamado';
 import { Contratos } from './pages/Contratos';
 import { Login } from './pages/Login';
 import { MeusChamados } from './pages/MeusChamados';
@@ -41,6 +42,7 @@ export default function App() {
               <Route path="/login" element={<Navigate to="/entrar" replace />} />
               <Route element={<Protegido />}>
                 <Route path="chamados" element={<ChamadosPorPerfil />} />
+                <Route path="chamados/:id" element={<DetalheChamado />} />
                 <Route element={<SoGerente />}>
                   <Route path="painel" element={<Painel />} />
                   <Route path="contratos" element={<Contratos />} />

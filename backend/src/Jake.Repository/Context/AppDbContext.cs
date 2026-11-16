@@ -8,6 +8,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Usuario> Usuarios => Set<Usuario>();
     public DbSet<Contrato> Contratos => Set<Contrato>();
     public DbSet<Chamado> Chamados => Set<Chamado>();
+    public DbSet<MensagemChamado> MensagensChamado => Set<MensagemChamado>();
     public DbSet<LogAcesso> LogsAcesso => Set<LogAcesso>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
@@ -51,6 +52,18 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 .HasForeignKey(x => x.ContratoId).OnDelete(DeleteBehavior.Restrict);
             e.HasOne(x => x.Cliente).WithMany(u => u.Chamados)
                 .HasForeignKey(x => x.ClienteId).OnDelete(DeleteBehavior.Restrict);
+        });
+
+        b.Entity<MensagemChamado>(e =>
+        {
+            e.ToTable("MENSAGEM_CHAMADO");
+            e.Property(x => x.AutorNome).HasMaxLength(150).IsRequired();
+            e.Property(x => x.AutorPerfil).HasConversion<int>();
+            e.Property(x => x.Conteudo).HasMaxLength(2000).IsRequired();
+            e.HasIndex(x => new { x.ChamadoId, x.DataEnvio });
+            e.HasOne(x => x.Chamado).WithMany(c => c.Mensagens)
+                .HasForeignKey(x => x.ChamadoId).OnDelete(DeleteBehavior.Cascade);
+            // Sem FK para USUARIO: o histórico guarda autor/nome como foram enviados.
         });
 
         b.Entity<RefreshToken>(e =>

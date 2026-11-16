@@ -1,0 +1,248 @@
+/* ==========================================================================
+   JAKE Tecnologia — Componentes base (web)
+   Requer tokens.css. Prefixo .jk- para não colidir com outros estilos.
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body.jk {
+  margin: 0;
+  background: var(--jk-fundo);
+  color: var(--jk-texto);
+  font-family: var(--jk-fonte-texto);
+  font-size: var(--jk-texto-md);
+  line-height: var(--jk-linha-texto);
+  -webkit-font-smoothing: antialiased;
+}
+
+.jk h1, .jk h2, .jk h3, .jk h4 {
+  font-family: var(--jk-fonte-titulo);
+  line-height: var(--jk-linha-compacta);
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-wrap: balance;
+}
+.jk h1 { font-size: var(--jk-texto-3xl); font-weight: 700; }
+.jk h2 { font-size: var(--jk-texto-2xl); font-weight: 700; }
+.jk h3 { font-size: var(--jk-texto-xl); font-weight: 600; }
+.jk h4 { font-size: var(--jk-texto-lg); font-weight: 600; }
+.jk a { color: var(--jk-link); text-underline-offset: 0.1875rem; }
+.jk :focus-visible { outline: none; box-shadow: var(--jk-foco); border-radius: var(--jk-raio-sm); }
+
+.jk-mono { font-family: var(--jk-fonte-mono); font-variant-numeric: tabular-nums; }
+
+/* Link "pular para o conteúdo" — navegação por teclado */
+.jk-pular {
+  position: absolute; left: var(--jk-esp-4); top: -6.25rem; z-index: 100;
+  background: var(--jk-destaque); color: var(--jk-sobre-destaque);
+  padding: var(--jk-esp-3) var(--jk-esp-4); border-radius: var(--jk-raio-md); font-weight: 600;
+}
+.jk-pular:focus { top: var(--jk-esp-3); }
+
+/* ---------- Botões ---------- */
+.jk-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--jk-esp-2);
+  min-height: var(--jk-alvo-toque); padding: 0 var(--jk-esp-5);
+  border: 1.5px solid transparent; border-radius: var(--jk-raio-md);
+  font: 600 var(--jk-texto-md)/1 var(--jk-fonte-texto);
+  cursor: pointer; text-decoration: none; white-space: nowrap;
+  transition: background var(--jk-transicao), border-color var(--jk-transicao), color var(--jk-transicao);
+}
+.jk-btn--primario { background: var(--jk-primaria); color: var(--jk-sobre-primaria); }
+.jk-btn--primario:hover { background: var(--jk-primaria-hover); }
+.jk-btn--destaque { background: var(--jk-destaque); color: var(--jk-sobre-destaque); }
+.jk-btn--destaque:hover { background: var(--jk-ipe-300); }
+.jk-btn--secundario { background: var(--jk-superficie); color: var(--jk-texto); border-color: var(--jk-borda-forte); }
+.jk-btn--secundario:hover { background: var(--jk-superficie-2); }
+.jk-btn--fantasma { background: transparent; color: var(--jk-link); }
+.jk-btn--fantasma:hover { background: var(--jk-primaria-suave); }
+.jk-btn--perigo { background: var(--jk-erro); color: #fff; }
+.jk-btn--sm { min-height: 2.25rem; padding: 0 var(--jk-esp-4); font-size: var(--jk-texto-sm); }
+.jk-btn--bloco { width: 100%; }
+.jk-btn:disabled, .jk-btn[aria-disabled="true"] {
+  background: var(--jk-superficie-2); color: var(--jk-texto-suave); border-color: transparent; cursor: not-allowed;
+}
+
+/* ---------- Campos ---------- */
+.jk-campo { display: grid; gap: var(--jk-esp-2); }
+.jk-campo label { font-size: var(--jk-texto-sm); font-weight: 600; }
+.jk-campo .jk-ajuda { font-size: var(--jk-texto-sm); color: var(--jk-texto-suave); }
+.jk-input, .jk-select, .jk-textarea {
+  width: 100%; min-height: var(--jk-alvo-toque); padding: var(--jk-esp-3) var(--jk-esp-4);
+  background: var(--jk-superficie); color: var(--jk-texto);
+  border: 1.5px solid var(--jk-borda-forte); border-radius: var(--jk-raio-md);
+  font: 400 var(--jk-texto-md)/1.4 var(--jk-fonte-texto);
+}
+.jk-input::placeholder, .jk-textarea::placeholder { color: var(--jk-texto-suave); }
+.jk-input:focus-visible, .jk-select:focus-visible, .jk-textarea:focus-visible {
+  border-color: var(--jk-primaria); border-radius: var(--jk-raio-md);
+}
+.jk-campo--erro .jk-input { border-color: var(--jk-erro); }
+.jk-campo--erro .jk-ajuda { color: var(--jk-erro-texto); font-weight: 500; }
+[data-theme="dark"] .jk-campo--erro .jk-ajuda { color: var(--jk-erro-texto); }
+
+/* ---------- Badges de status (cor + ponto + texto: nunca só cor) ---------- */
+.jk-badge {
+  display: inline-flex; align-items: center; gap: 0.375rem;
+  padding: 0.25rem 0.625rem; border-radius: var(--jk-raio-pill);
+  font-size: var(--jk-texto-xs); font-weight: 600; line-height: 1.3; white-space: nowrap;
+  background: var(--jk-superficie-2); color: var(--jk-texto);
+}
+.jk-badge::before { content: ""; width: 0.4375rem; height: 0.4375rem; border-radius: 50%; background: currentColor; }
+.jk-badge--aberto { background: var(--jk-info-fundo); color: var(--jk-info-texto); }
+.jk-badge--atendimento { background: var(--jk-alerta-fundo); color: var(--jk-alerta-texto); }
+.jk-badge--resolvido { background: var(--jk-sucesso-fundo); color: var(--jk-sucesso-texto); }
+.jk-badge--fechado { background: var(--jk-superficie-2); color: var(--jk-texto-suave); }
+.jk-badge--vencido { background: var(--jk-erro-fundo); color: var(--jk-erro-texto); }
+
+/* Etiqueta de tipo de contrato */
+.jk-tipo {
+  display: inline-flex; align-items: center; gap: 0.375rem;
+  font-size: var(--jk-texto-xs); font-weight: 600; color: var(--jk-texto);
+}
+.jk-tipo::before { content: ""; width: 0.625rem; height: 0.625rem; border-radius: 0.1875rem; background: var(--jk-contrato-suporte); }
+.jk-tipo--sistema::before { background: var(--jk-contrato-sistema); }
+.jk-tipo--cloud::before { background: var(--jk-contrato-cloud); }
+
+/* ---------- Cartões ---------- */
+.jk-card {
+  background: var(--jk-superficie); border: 1px solid var(--jk-borda);
+  border-radius: var(--jk-raio-lg); padding: var(--jk-esp-5); box-shadow: var(--jk-sombra-1);
+}
+.jk-kpi { display: grid; gap: var(--jk-esp-1); }
+.jk-kpi__rotulo { font-size: var(--jk-texto-sm); color: var(--jk-texto-suave); }
+.jk-kpi__valor { font: 700 var(--jk-texto-2xl)/1.1 var(--jk-fonte-titulo); letter-spacing: -0.02em; }
+.jk-kpi__nota { font-size: var(--jk-texto-xs); color: var(--jk-texto-suave); }
+
+/* ---------- Avisos ---------- */
+.jk-aviso {
+  display: flex; gap: var(--jk-esp-3); padding: var(--jk-esp-4);
+  border-radius: var(--jk-raio-md); border-left: 0.25rem solid var(--jk-info);
+  background: var(--jk-info-fundo); color: var(--jk-info-texto); font-size: var(--jk-texto-sm);
+}
+.jk-aviso--erro { border-color: var(--jk-erro); background: var(--jk-erro-fundo); color: var(--jk-erro-texto); }
+.jk-aviso--sucesso { border-color: var(--jk-sucesso); background: var(--jk-sucesso-fundo); color: var(--jk-sucesso-texto); }
+.jk-aviso--alerta { border-color: var(--jk-alerta); background: var(--jk-alerta-fundo); color: var(--jk-alerta-texto); }
+
+/* ---------- Tabela ---------- */
+.jk-tabela { width: 100%; border-collapse: collapse; font-size: var(--jk-texto-sm); }
+.jk-tabela th {
+  text-align: left; font-weight: 600; color: var(--jk-texto-suave);
+  padding: var(--jk-esp-3) var(--jk-esp-4); border-bottom: 1px solid var(--jk-borda);
+}
+.jk-tabela td { padding: var(--jk-esp-3) var(--jk-esp-4); border-bottom: 1px solid var(--jk-borda); }
+.jk-tabela tr:last-child td { border-bottom: 0; }
+
+/* ---------- Cabeçalho ---------- */
+.jk-cabecalho-ctn { container-type: inline-size; }
+.jk-cabecalho {
+  display: flex; align-items: center; gap: var(--jk-esp-5);
+  min-height: var(--jk-altura-cabecalho); padding: 0 var(--jk-esp-5);
+  background: var(--jk-superficie); border-bottom: 1px solid var(--jk-borda);
+}
+.jk-cabecalho__logo img { display: block; height: 2.25rem; width: auto; }
+.jk-cabecalho__nav { display: flex; gap: var(--jk-esp-1); margin-left: auto; }
+.jk-cabecalho__nav a {
+  display: inline-flex; align-items: center; min-height: var(--jk-alvo-toque);
+  padding: 0 var(--jk-esp-3); border-radius: var(--jk-raio-md);
+  color: var(--jk-texto); text-decoration: none; font-weight: 500; font-size: var(--jk-texto-sm);
+}
+.jk-cabecalho__nav a:hover { background: var(--jk-superficie-2); }
+.jk-cabecalho__nav a[aria-current="page"] { color: var(--jk-link); background: var(--jk-primaria-suave); font-weight: 600; }
+.jk-cabecalho__menu { display: none; margin-left: auto; }
+@container (max-width: 45rem) {
+  .jk-cabecalho { padding: 0 var(--jk-esp-4); min-height: 3.5rem; }
+  .jk-cabecalho__logo img { height: 1.875rem; }
+  .jk-cabecalho__nav, .jk-cabecalho__acao { display: none; }
+  .jk-cabecalho__menu { display: inline-flex; }
+}
+.jk-icone-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--jk-alvo-toque); height: var(--jk-alvo-toque);
+  background: transparent; border: 0; border-radius: var(--jk-raio-md); color: var(--jk-texto); cursor: pointer;
+}
+.jk-icone-btn:hover { background: var(--jk-superficie-2); }
+
+/* ---------- Rodapé institucional (site) ----------
+   Usa container queries: adapta-se à largura do contêiner, não só da janela. */
+.jk-rodape-ctn { container-type: inline-size; }
+.jk-rodape {
+  background: var(--jk-neutro-900); color: var(--jk-neutro-300);
+  font-size: var(--jk-texto-sm); position: relative;
+}
+.jk-rodape::before { /* filete de marca */
+  content: ""; display: block; height: 0.25rem;
+  background: linear-gradient(90deg, var(--jk-azul-600) 0 72%, var(--jk-ipe-500) 72% 100%);
+}
+.jk-rodape__topo {
+  display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: var(--jk-esp-6);
+  max-width: var(--jk-largura-conteudo); margin: 0 auto; padding: var(--jk-esp-7) var(--jk-esp-5) var(--jk-esp-6);
+}
+.jk-rodape__marca img { display: block; height: 2.75rem; width: auto; }
+.jk-rodape__marca p { margin: var(--jk-esp-4) 0 0; max-width: 32ch; }
+.jk-rodape h2 {
+  font: 600 var(--jk-texto-xs)/1.2 var(--jk-fonte-texto); letter-spacing: 0.08em; text-transform: uppercase;
+  color: #fff; margin: 0 0 var(--jk-esp-3);
+}
+.jk-rodape ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--jk-esp-1); }
+.jk-rodape a { color: var(--jk-neutro-300); text-decoration: none; display: inline-block; padding: 0.25rem 0; }
+.jk-rodape a:hover { color: #fff; text-decoration: underline; }
+.jk-rodape :focus-visible { box-shadow: 0 0 0 0.1875rem var(--jk-neutro-900), 0 0 0 0.375rem var(--jk-ipe-500); }
+.jk-rodape__base {
+  display: flex; flex-wrap: wrap; gap: var(--jk-esp-3) var(--jk-esp-5); align-items: center; justify-content: space-between;
+  max-width: var(--jk-largura-conteudo); margin: 0 auto; padding: var(--jk-esp-4) var(--jk-esp-5);
+  border-top: 1px solid var(--jk-neutro-700); font-size: var(--jk-texto-xs);
+}
+.jk-rodape__base ul { display: flex; flex-wrap: wrap; gap: var(--jk-esp-4); }
+@container (max-width: 53.75rem) {
+  .jk-rodape__topo { grid-template-columns: 1fr 1fr; }
+  .jk-rodape__marca { grid-column: 1 / -1; }
+}
+@container (max-width: 32.5rem) {
+  .jk-rodape__topo { grid-template-columns: 1fr; gap: var(--jk-esp-5); padding: var(--jk-esp-6) var(--jk-esp-4) var(--jk-esp-5); }
+  .jk-rodape__marca img { height: 2.375rem; }
+  .jk-rodape a { padding: 0.625rem 0; } /* alvo de toque maior */
+  .jk-rodape ul { gap: 0; }
+  .jk-rodape__base { flex-direction: column; align-items: flex-start; padding: var(--jk-esp-4); }
+  .jk-rodape__base ul { gap: 0 var(--jk-esp-4); }
+}
+
+/* ---------- Rodapé compacto (dentro do sistema autenticado) ---------- */
+.jk-rodape-app {
+  display: flex; flex-wrap: wrap; gap: var(--jk-esp-2) var(--jk-esp-4); align-items: center; justify-content: space-between;
+  padding: var(--jk-esp-3) var(--jk-esp-5); border-top: 1px solid var(--jk-borda);
+  background: var(--jk-superficie); color: var(--jk-texto-suave); font-size: var(--jk-texto-xs);
+}
+.jk-rodape-app a { color: var(--jk-texto-suave); }
+.jk-rodape-app nav { display: flex; gap: var(--jk-esp-4); }
+
+/* ---------- Barra de abas inferior (web mobile / referência do app) ---------- */
+.jk-abas {
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
+  background: var(--jk-superficie); border-top: 1px solid var(--jk-borda);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.jk-abas a {
+  display: grid; justify-items: center; gap: 2px; padding: 0.5rem 0.25rem 0.625rem; min-height: 3.5rem;
+  color: var(--jk-texto-suave); text-decoration: none; font-size: 0.6875rem; font-weight: 500;
+}
+.jk-abas a[aria-current="page"] { color: var(--jk-link); font-weight: 600; }
+.jk-abas svg { width: 1.375rem; height: 1.375rem; }
+
+/* Ícones: traço 2px, cantos arredondados (padrão Lucide) */
+.jk-icone { width: 1.25rem; height: 1.25rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+/* ---------- Alto contraste: bordas e textos explícitos ---------- */
+:root[data-tema='contraste'] .jk-card,
+:root[data-tema='contraste'] .jk-aviso,
+:root[data-tema='contraste'] .jk-badge { border: 2px solid #fff; }
+:root[data-tema='contraste'] .jk-aviso { border-left-width: 6px; }
+:root[data-tema='contraste'] .jk-btn--primario,
+:root[data-tema='contraste'] .jk-btn--destaque { color: #000; }
+:root[data-tema='contraste'] .jk-btn--perigo { background: #FFB3B3; color: #000; }
+:root[data-tema='contraste'] .jk-btn--secundario,
+:root[data-tema='contraste'] .jk-btn--fantasma { border-color: #fff; color: #fff; }
+:root[data-tema='contraste'] .jk-btn:hover:not(:disabled) { background: #fff; color: #000; }
+:root[data-tema='contraste'] .jk-rodape { background: #000; border-top: 2px solid #fff; color: #fff; }
+:root[data-tema='contraste'] .jk-rodape a { color: #fff; }
+:root[data-tema='contraste'] .jk-menu { background: #000; border-right: 2px solid #fff; }

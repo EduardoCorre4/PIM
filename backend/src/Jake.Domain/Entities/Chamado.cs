@@ -16,4 +16,5 @@ public class Chamado
     public string? ChaveIdempotencia { get; set; }
     public int ClienteId { get; set; }
     public Usuario? Cliente { get; set; }
+    public List<MensagemChamado> Mensagens { get; set; } = [];
 }

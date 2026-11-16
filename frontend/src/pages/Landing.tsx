@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
+import { Cloud, Headset, LogIn, MonitorSmartphone, ShieldCheck, Smartphone } from 'lucide-react';
 import { BarraAcessibilidade } from '../components/Layout';
+import { Logo } from '../components/Logo';
 import { usePageTitle } from '../components/usePageTitle';
 
 // Credenciais de demonstração. O Gerente vem do .env (SEED_GERENTE_*), repassado no build do Docker;
@@ -14,17 +16,31 @@ const GERENTE_SENHA = import.meta.env.VITE_DEMO_GERENTE_SENHA || 'definida em SE
 export function Landing() {
   usePageTitle('Início');
   return (
-    <>
-      <a className="pular" href="#inicio">Ir para o conteúdo principal</a>
-      <header className="topo"><p className="marca">JAKE Tecnologia</p><BarraAcessibilidade /></header>
+    <div className="pagina-publica">
+      <a className="jk-pular" href="#inicio">Pular para o conteúdo</a>
+      <div className="jk-cabecalho-ctn">
+        <header className="jk-cabecalho">
+          <a className="jk-cabecalho__logo" href="/" aria-label="JAKE Tecnologia — início"><Logo tipo="horizontal" /></a>
+          <div className="cab-acess"><BarraAcessibilidade /></div>
+          <Link to="/entrar" className="jk-btn jk-btn--primario"><LogIn className="jk-icone" aria-hidden="true" />Entrar</Link>
+        </header>
+      </div>
+
       <main id="inicio" tabIndex={-1} className="landing">
         <section className="heroi" aria-labelledby="titulo-inicio">
+          <p className="heroi__sel">Goiânia · Grande Goiânia</p>
           <h1 id="titulo-inicio">Central de chamados e contratos da JAKE Tecnologia</h1>
-          <p>Sistemas, suporte e segurança na nuvem em um só lugar. Escolha como deseja acessar.</p>
+          <p>Sistemas, suporte e segurança em nuvem em um só lugar. Escolha como deseja acessar.</p>
+          <div className="heroi__tipos">
+            <span className="jk-tipo"><Headset className="jk-icone" aria-hidden="true" />Suporte</span>
+            <span className="jk-tipo jk-tipo--sistema"><MonitorSmartphone className="jk-icone" aria-hidden="true" />Sistema</span>
+            <span className="jk-tipo jk-tipo--cloud"><Cloud className="jk-icone" aria-hidden="true" />Cloud Security</span>
+          </div>
         </section>
 
         <div className="grade">
-          <section className="cartao acesso" aria-labelledby="t-portal">
+          <section className="jk-card acesso" aria-labelledby="t-portal">
+            <ShieldCheck className="jk-icone acesso__icone" aria-hidden="true" />
             <h2 id="t-portal">Acessar pelo navegador (Web)</h2>
             <p className="publico">Para Cliente, Funcionário e Gerente</p>
             <ul>
@@ -32,10 +48,11 @@ export function Landing() {
               <li><strong>Funcionário:</strong> vê a fila de chamados e altera a situação.</li>
               <li><strong>Gerente:</strong> tudo isso, mais contratos, indicadores e relatórios.</li>
             </ul>
-            <Link to="/entrar" className="botao-link primario">Entrar pelo Web</Link>
+            <Link to="/entrar" className="jk-btn jk-btn--primario acesso__acao">Entrar pelo Web</Link>
           </section>
 
-          <section className="cartao acesso" aria-labelledby="t-cliente">
+          <section className="jk-card acesso" aria-labelledby="t-cliente">
+            <Smartphone className="jk-icone acesso__icone" aria-hidden="true" />
             <h2 id="t-cliente">Acessar pelo aplicativo (Mobile)</h2>
             <p className="publico">Para Cliente, Funcionário e Gerente</p>
             <ol>
@@ -48,7 +65,7 @@ export function Landing() {
           </section>
         </div>
 
-        <section className="cartao demo" aria-labelledby="t-demo">
+        <section className="jk-card demo" aria-labelledby="t-demo">
           <h2 id="t-demo">Credenciais de demonstração</h2>
           <p className="nota">Somente para testes locais da apresentação. Qualquer perfil funciona tanto no Web quanto no Mobile.</p>
           <div className="tabela-wrap">
@@ -67,6 +84,38 @@ export function Landing() {
           </div>
         </section>
       </main>
-    </>
+
+      <div className="jk-rodape-ctn">
+        <footer className="jk-rodape">
+          <div className="jk-rodape__topo">
+            <div className="jk-rodape__marca">
+              <img src="/logo-horizontal-negativo.svg" alt="JAKE Tecnologia" />
+              <p>Suporte, sistemas e segurança em nuvem para pequenas e médias empresas da Grande Goiânia.</p>
+            </div>
+            <div>
+              <h2>Serviços</h2>
+              <ul><li>Suporte técnico</li><li>Sistemas sob demanda</li><li>Cloud Security</li><li>Infraestrutura de redes</li></ul>
+            </div>
+            <div>
+              <h2>Plataforma</h2>
+              <ul>
+                <li><Link to="/entrar">Abrir chamado</Link></li>
+                <li><Link to="/entrar">Acompanhar chamados</Link></li>
+                <li><Link to="/entrar">Meus contratos</Link></li>
+                <li>Baixar o aplicativo</li>
+              </ul>
+            </div>
+            <div>
+              <h2>Atendimento</h2>
+              <ul><li>Goiânia · GO</li><li>Seg. a sex., 8h às 18h</li><li>(62) 0000-0000</li><li>contato@jaketecnologia.com.br</li></ul>
+            </div>
+          </div>
+          <div className="jk-rodape__base">
+            <span>© 2026 JAKE Tecnologia. Todos os direitos reservados.</span>
+            <ul><li>Privacidade</li><li>Termos de uso</li><li>Acessibilidade</li></ul>
+          </div>
+        </footer>
+      </div>
+    </div>
   );
 }

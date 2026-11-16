@@ -1,15 +1,19 @@
 import { useNavigation } from '@react-navigation/native';
-import { Alert, RefreshControl, ScrollView, Text, View } from 'react-native';
+import { Alert, Pressable, RefreshControl, ScrollView, Text, View } from 'react-native';
+import { Plus } from 'lucide-react-native';
 import { BarraConexao } from '../components/BarraConexao';
-import { Botao, Cartao, Selo, SeloFila, Titulo, cor } from '../components/ui';
+import { Avatar, Botao, Cartao, Selo, SeloFila, codigoChamado, cor, tx } from '../components/ui';
+import { fonte, paleta, raio } from '../theme';
 import { contratoElegivel, formatarDataHora } from '../core/regras';
 import { useApp } from '../state/AppContext';
 
-function Numero({ valor, rotulo }: { valor: number; rotulo: string }) {
+function Numero({ valor, rotulo, nota }: { valor: number; rotulo: string; nota?: string }) {
   return (
-    <View accessible accessibilityLabel={`${rotulo}: ${valor}`} style={{ flex: 1, minWidth: 140, padding: 12, borderWidth: 2, borderColor: cor.borda, borderRadius: 12, backgroundColor: cor.superficie }}>
-      <Text style={{ fontSize: 32, fontWeight: '800', color: cor.primaria }}>{valor}</Text>
-      <Text style={{ fontSize: 15, color: cor.texto, fontWeight: '600' }}>{rotulo}</Text>
+    <View accessible accessibilityLabel={`${rotulo}: ${valor}${nota ? `, ${nota}` : ''}`}
+      style={{ flexGrow: 1, flexBasis: '45%', padding: 14, borderWidth: 1, borderColor: cor.borda, borderRadius: raio.lg, backgroundColor: cor.superficie }}>
+      <Text allowFontScaling style={tx.suave}>{rotulo}</Text>
+      <Text allowFontScaling style={{ fontFamily: fonte.titulo, fontSize: 28, color: cor.texto, letterSpacing: -0.5 }}>{valor}</Text>
+      {nota ? <Text allowFontScaling style={{ fontFamily: fonte.texto, fontSize: 12, color: cor.suave }}>{nota}</Text> : null}
     </View>
   );
 }
@@ -36,52 +40,71 @@ export function Dashboard() {
   return (
     <View style={{ flex: 1, backgroundColor: cor.fundo }}>
       <BarraConexao />
-      <ScrollView contentContainerStyle={{ padding: 16 }} refreshControl={<RefreshControl refreshing={sincronizando} onRefresh={atualizar} />}>
-        <Titulo>Olá, {usuario?.nome}</Titulo>
-        {atendente
-          ? <Botao rotulo="Ver fila de chamados" onPress={() => nav.navigate('Chamados')} />
-          : <Botao rotulo="Abrir novo chamado" dica="Abre um passo a passo de 3 etapas" onPress={() => nav.navigate('NovoChamado')} />}
+      <ScrollView contentContainerStyle={{ padding: 16, gap: 14 }} refreshControl={<RefreshControl refreshing={sincronizando} onRefresh={atualizar} />}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <View style={{ flex: 1 }}>
+            <Text allowFontScaling style={tx.suave}>Olá,</Text>
+            <Text accessibilityRole="header" allowFontScaling style={{ fontFamily: fonte.titulo, fontSize: 22, color: cor.texto, letterSpacing: -0.5 }}>{usuario?.nome}</Text>
+          </View>
+          <Avatar nome={usuario?.nome} />
+        </View>
 
-        <Text accessibilityRole="header" style={{ fontSize: 20, fontWeight: '700', color: cor.texto, marginVertical: 8 }}>{atendente ? 'Fila de atendimento' : 'Seus chamados'}</Text>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 12 }}>
+        <View style={{ backgroundColor: paleta.azul, borderRadius: 18, padding: 16, gap: 10 }}>
+          <Text allowFontScaling style={{ fontFamily: fonte.titulo, fontSize: 18, lineHeight: 24, color: '#fff' }}>
+            {atendente ? 'Fila de atendimento' : 'Precisa de ajuda?'}
+          </Text>
+          <Text allowFontScaling style={{ fontFamily: fonte.texto, fontSize: 13, color: paleta.azul100 }}>
+            {atendente ? 'Veja os chamados e altere a situação.' : 'Abra um chamado em até 3 passos.'}
+          </Text>
+          <View style={{ alignSelf: 'flex-start' }}>
+            {atendente
+              ? <Botao variante="destaque" rotulo="Ver fila de chamados" onPress={() => nav.navigate('Chamados')} />
+              : <Botao variante="destaque" rotulo="Abrir chamado" dica="Abre um passo a passo de 3 etapas"
+                  icone={<Plus size={20} color={paleta.noite} strokeWidth={2} />} onPress={() => nav.navigate('NovoChamado')} />}
+          </View>
+        </View>
+
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10 }}>
           <Numero valor={abertos} rotulo="Abertos" />
-          <Numero valor={andamento} rotulo="Em andamento" />
+          <Numero valor={andamento} rotulo="Em atendimento" />
           <Numero valor={resolvidos} rotulo="Resolvidos" />
-          {!atendente && <Numero valor={ativos} rotulo="Contratos ativos" />}
+          {!atendente && <Numero valor={ativos} rotulo="Contratos" nota="ativos" />}
         </View>
 
         {(fila > 0 || falhas > 0) && (
           <Cartao>
-            {fila > 0 && <Text style={{ fontSize: 16, color: cor.avisoTexto, fontWeight: '700' }}>
+            {fila > 0 && <Text allowFontScaling style={{ fontFamily: fonte.textoSemi, fontSize: 15, color: paleta.alertaTexto }}>
               {fila === 1 ? '1 chamado aguardando envio' : `${fila} chamados aguardando envio`}
             </Text>}
-            {falhas > 0 && <Text style={{ fontSize: 16, color: cor.erro, fontWeight: '700' }}>
+            {falhas > 0 && <Text allowFontScaling style={{ fontFamily: fonte.textoSemi, fontSize: 15, color: paleta.erroTexto }}>
               {falhas === 1 ? '1 chamado não foi enviado e precisa da sua atenção' : `${falhas} chamados não foram enviados e precisam da sua atenção`}
             </Text>}
+            <View style={{ height: 8 }} />
             <Botao variante="secundario" rotulo="Ver chamados" onPress={() => nav.navigate('Chamados')} />
           </Cartao>
         )}
 
-        <Text accessibilityRole="header" style={{ fontSize: 20, fontWeight: '700', color: cor.texto, marginVertical: 8 }}>Mais recentes</Text>
-        {recentes.length === 0 && <Text style={{ fontSize: 16, color: cor.suave, marginBottom: 12 }}>{atendente ? 'Não há chamados na fila.' : 'Você ainda não abriu nenhum chamado.'}</Text>}
+        <Text accessibilityRole="header" allowFontScaling style={[tx.h2, { marginVertical: 0 }]}>{atendente ? 'Mais recentes na fila' : 'Últimos chamados'}</Text>
+        {recentes.length === 0 && <Text allowFontScaling style={tx.suave}>{atendente ? 'Não há chamados na fila.' : 'Você ainda não abriu nenhum chamado.'}</Text>}
         {recentes.map(c => (
-          <Cartao key={c.id}>
-            <Text accessibilityRole="button" onPress={() => nav.navigate('DetalheChamado', { id: c.id })}
-              style={{ fontSize: 17, fontWeight: '700', color: cor.primaria, textDecorationLine: 'underline', minHeight: 32 }}>
-              {c.titulo}
-            </Text>
-            <Text style={{ color: cor.suave, marginVertical: 4 }}>Aberto em {formatarDataHora(c.dataAbertura)}</Text>
-            <Selo situacao={c.status} />
-          </Cartao>
+          <Pressable key={c.id} accessibilityRole="button" accessibilityLabel={`${c.titulo}. ${codigoChamado(c.id)}`}
+            onPress={() => nav.navigate('DetalheChamado', { id: c.id })}
+            style={{ minHeight: 48, backgroundColor: cor.superficie, borderWidth: 1, borderColor: cor.borda, borderRadius: raio.lg, padding: 14, gap: 6 }}>
+            <Text allowFontScaling style={{ fontFamily: fonte.textoSemi, fontSize: 15, color: cor.texto }}>{c.titulo}</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Text allowFontScaling style={[tx.mono, { fontSize: 12, color: cor.suave }]}>{codigoChamado(c.id)} · {formatarDataHora(c.dataAbertura)}</Text>
+              <Selo situacao={c.status} />
+            </View>
+          </Pressable>
         ))}
         {pendentes.slice(0, 1).map(p => (
           <Cartao key={p.localId}>
-            <Text style={{ fontSize: 17, fontWeight: '700', color: cor.texto }}>{p.titulo}</Text>
+            <Text allowFontScaling style={{ fontFamily: fonte.textoSemi, fontSize: 15, color: cor.texto, marginBottom: 6 }}>{p.titulo}</Text>
             <SeloFila falhou={p.estado === 'falhou'} />
           </Cartao>
         ))}
 
-        <Text style={{ color: cor.suave, fontSize: 14, marginVertical: 8 }}>
+        <Text allowFontScaling style={tx.suave}>
           {ultimaSincronizacao ? `Atualizado em ${formatarDataHora(ultimaSincronizacao)}. Puxe a tela para baixo para atualizar.` : 'Ainda não atualizado.'}
         </Text>
         <Botao variante="secundario" rotulo="Sair" onPress={confirmarSaida} />

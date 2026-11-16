@@ -340,3 +340,47 @@ GO
 COMMIT;
 GO
 
+BEGIN TRANSACTION;
+GO
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261116170250_AddMensagemChamado'
+)
+BEGIN
+    CREATE TABLE [MENSAGEM_CHAMADO] (
+        [Id] int NOT NULL IDENTITY,
+        [ChamadoId] int NOT NULL,
+        [AutorId] int NOT NULL,
+        [AutorNome] nvarchar(150) NOT NULL,
+        [AutorPerfil] int NOT NULL,
+        [Conteudo] nvarchar(2000) NOT NULL,
+        [DataEnvio] datetime2 NOT NULL,
+        CONSTRAINT [PK_MENSAGEM_CHAMADO] PRIMARY KEY ([Id]),
+        CONSTRAINT [FK_MENSAGEM_CHAMADO_CHAMADO_ChamadoId] FOREIGN KEY ([ChamadoId]) REFERENCES [CHAMADO] ([Id]) ON DELETE CASCADE
+    );
+END;
+GO
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261116170250_AddMensagemChamado'
+)
+BEGIN
+    CREATE INDEX [IX_MENSAGEM_CHAMADO_ChamadoId_DataEnvio] ON [MENSAGEM_CHAMADO] ([ChamadoId], [DataEnvio]);
+END;
+GO
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20261116170250_AddMensagemChamado'
+)
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20261116170250_AddMensagemChamado', N'8.0.11');
+END;
+GO
+
+COMMIT;
+GO
+

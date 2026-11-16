@@ -10,6 +10,11 @@ export interface Chamado {
   contratoId: number; contratoNumero: string | null; clienteId: number; clienteNome: string | null;
 }
 
+export interface MensagemChamado {
+  id: number; chamadoId: number; autorId: number; autorNome: string; autorPerfil: number; conteudo: string; dataEnvio: string;
+}
+export interface ChamadoDetalhe extends Chamado { mensagens: MensagemChamado[] }
+
 /** Chamado criado no aparelho, ainda não confirmado pelo servidor. */
 export interface ChamadoPendente {
   localId: string;

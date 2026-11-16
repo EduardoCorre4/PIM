@@ -1,6 +1,7 @@
 import { useRef, useState, type ComponentRef } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput } from 'react-native';
-import { Aviso, Botao, Campo, Titulo, cor } from '../components/ui';
+import { Image, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput } from 'react-native';
+import { Aviso, Botao, Campo, cor } from '../components/ui';
+import { fonte } from '../theme';
 import { ApiError } from '../core/http';
 import { useApp } from '../state/AppContext';
 
@@ -36,16 +37,19 @@ export function Login() {
   }
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1, backgroundColor: cor.fundo }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView contentContainerStyle={{ padding: 20, paddingTop: 56 }} keyboardShouldPersistTaps="handled">
-        <Text style={{ fontSize: 18, fontWeight: '700', color: cor.primaria, marginBottom: 8 }}>JAKE Tecnologia</Text>
-        <Titulo>Entrar</Titulo>
-        <Text style={{ fontSize: 16, color: cor.suave, marginBottom: 20 }}>Use o e-mail e a senha que você recebeu (Cliente, Funcionário ou Gerente).</Text>
+    <KeyboardAvoidingView style={{ flex: 1, backgroundColor: cor.superficie }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <ScrollView contentContainerStyle={{ padding: 24, paddingTop: 56 }} keyboardShouldPersistTaps="handled">
+        <Image source={require('../../assets/logo-vertical.png')} accessibilityLabel="JAKE Tecnologia"
+          style={{ width: 160, height: 152, alignSelf: 'center', marginBottom: 12 }} resizeMode="contain" />
+        <Text accessibilityRole="header" allowFontScaling style={{ fontFamily: fonte.titulo, fontSize: 24, color: cor.texto, textAlign: 'center', letterSpacing: -0.5 }}>Entrar</Text>
+        <Text allowFontScaling style={{ fontFamily: fonte.texto, fontSize: 14, color: cor.suave, textAlign: 'center', marginTop: 4, marginBottom: 24 }}>
+          Acompanhe seus chamados e contratos. Use o e-mail e a senha que você recebeu (Cliente, Funcionário ou Gerente).
+        </Text>
         {erroGeral ? <Aviso tom="erro">{erroGeral}</Aviso> : null}
         <Campo rotulo="E-mail" erro={erros.email} value={email} onChangeText={setEmail} keyboardType="email-address"
-          autoCapitalize="none" autoComplete="email" autoCorrect={false} textContentType="username"
+          autoCapitalize="none" autoComplete="email" autoCorrect={false} textContentType="username" placeholder="voce@empresa.com.br"
           returnKeyType="next" onSubmitEditing={() => refSenha.current?.focus()} />
-        <Campo rotulo="Senha" erro={erros.senha} value={senha} onChangeText={setSenha} secureTextEntry
+        <Campo rotulo="Senha" erro={erros.senha} value={senha} onChangeText={setSenha} secureTextEntry placeholder="Sua senha"
           autoComplete="password" textContentType="password" inputRef={refSenha} returnKeyType="go" onSubmitEditing={enviar} />
         <Botao rotulo={enviando ? 'Entrando…' : 'Entrar'} onPress={enviar} carregando={enviando} />
       </ScrollView>

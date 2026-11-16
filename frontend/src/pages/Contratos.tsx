@@ -6,6 +6,7 @@ import { Field } from '../components/Field';
 import { Modal } from '../components/Modal';
 import { usePageTitle } from '../components/usePageTitle';
 import { SITUACAO_CONTRATO, TIPO_CONTRATO, formatarData } from '../labels';
+import { BadgeContrato, TipoContrato } from '../components/Badge';
 
 const VAZIO: ContratoInput = { numero: '', descricao: '', tipo: 2, status: 1, dataInicio: '', dataFim: '', clienteId: 0 };
 type Erros = Partial<Record<'numero' | 'dataInicio' | 'dataFim' | 'clienteId', string>>;
@@ -158,12 +159,12 @@ export function Contratos() {
             <tbody>
               {lista.map(c => (
                 <tr key={c.id}>
-                  <td>{c.numero}</td>
+                  <td className="jk-mono">{c.numero}</td>
                   <td>{c.clienteNome}</td>
-                  <td>{TIPO_CONTRATO[c.tipo]}</td>
-                  <td>{SITUACAO_CONTRATO[c.status]}</td>
-                  <td>{formatarData(c.dataInicio)}</td>
-                  <td>{formatarData(c.dataFim)}</td>
+                  <td><TipoContrato tipo={c.tipo} /></td>
+                  <td><BadgeContrato status={c.status} dataFim={c.dataFim} /></td>
+                  <td className="jk-mono">{formatarData(c.dataInicio)}</td>
+                  <td className="jk-mono">{formatarData(c.dataFim)}</td>
                   <td className="acoes">
                     <button type="button" onClick={() => editar(c)}>Editar<span className="so-leitor"> contrato {c.numero}</span></button>
                     <button type="button" onClick={() => { setErroExclusao(''); setExclusao(c); }}>Excluir<span className="so-leitor"> contrato {c.numero}</span></button>

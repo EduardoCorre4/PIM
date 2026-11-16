@@ -5,6 +5,8 @@ export const TAMANHOS = [100, 125, 150, 175] as const;
 interface Ctx {
   tamanho: number;
   altoContraste: boolean;
+  escuro: boolean;
+  alternarTema: () => void;
   aumentar: () => void;
   diminuir: () => void;
   restaurar: () => void;
@@ -26,10 +28,12 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
     document.documentElement.style.fontSize = `${tamanho}%`; // todo o layout usa rem
     localStorage.setItem('jake.fonte', JSON.stringify(tamanho));
   }, [tamanho]);
+  const [escuro, setEscuro] = useState<boolean>(() => ler('jake.escuro', false));
   useEffect(() => {
-    document.documentElement.dataset.tema = altoContraste ? 'contraste' : 'padrao';
+    document.documentElement.dataset.tema = altoContraste ? 'contraste' : escuro ? 'escuro' : 'claro';
     localStorage.setItem('jake.contraste', JSON.stringify(altoContraste));
-  }, [altoContraste]);
+    localStorage.setItem('jake.escuro', JSON.stringify(escuro));
+  }, [altoContraste, escuro]);
 
   const passo = (d: number) => setTamanho(t => {
     const i = Math.max(0, Math.min(TAMANHOS.length - 1, TAMANHOS.indexOf(t as never) + d));
@@ -38,7 +42,7 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
 
   return (
     <C.Provider value={{
-      tamanho, altoContraste,
+      tamanho, altoContraste, escuro, alternarTema: () => setEscuro(v => !v),
       aumentar: () => passo(1), diminuir: () => passo(-1), restaurar: () => setTamanho(100),
       alternarContraste: () => setAlto(v => !v),
     }}>{children}</C.Provider>

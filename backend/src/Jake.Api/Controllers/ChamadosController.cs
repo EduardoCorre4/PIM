@@ -32,12 +32,18 @@ public class ChamadosController(IChamadoService service) : ControllerBase
     public async Task<ActionResult<List<ChamadoResponse>>> Fila([FromQuery] StatusChamado? status) =>
         Ok(await service.ListarTodosAsync(status));
 
+    /// <summary>Detalhe do chamado com o histórico de mensagens (mais antiga primeiro).</summary>
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<ChamadoResponse>> Obter(int id) =>
-        Ok(await service.ObterAsync(id, User.ObterUsuarioId(), User.ObterPerfil()));
+    public async Task<ActionResult<ChamadoDetalheResponse>> Obter(int id) =>
+        Ok(await service.ObterDetalheAsync(id, User.ObterUsuarioId(), User.ObterPerfil()));
 
+    /// <summary>Nova mensagem: cliente dono, funcionário ou gerente. Bloqueada se o chamado estiver Fechado.</summary>
+    [HttpPost("{id:int}/mensagens")]
+    public async Task<ActionResult<MensagemChamadoResponse>> EnviarMensagem(int id, EnviarMensagemRequest request) =>
+        Ok(await service.EnviarMensagemAsync(id, User.ObterUsuarioId(), User.ObterPerfil(), request.Conteudo));
+
+    /// <summary>Equipe altera a situação; cliente dono (ou gerente) reabre chamado Fechado.</summary>
     [HttpPatch("{id:int}/status")]
-    [Authorize(Roles = "Gerente,Funcionario")]
     public async Task<ActionResult<ChamadoResponse>> AtualizarStatus(int id, AtualizarStatusChamadoRequest request) =>
-        Ok(await service.AtualizarStatusAsync(id, request.Status));
+        Ok(await service.AtualizarStatusAsync(id, request.Status, User.ObterUsuarioId(), User.ObterPerfil()));
 }

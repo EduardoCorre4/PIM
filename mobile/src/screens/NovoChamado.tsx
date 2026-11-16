@@ -2,11 +2,10 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from 'react-native';
 import { BarraConexao } from '../components/BarraConexao';
-import { Aviso, Botao, Campo, Cartao, Titulo, cor } from '../components/ui';
+import { Aviso, Botao, Campo, Cartao, TIPO_CONTRATO as TIPO, TipoContrato, Titulo, cor, tx } from '../components/ui';
+import { fonte, paleta, raio } from '../theme';
 import { contratoElegivel, formatarData } from '../core/regras';
 import { useApp } from '../state/AppContext';
-
-const TIPO: Record<number, string> = { 1: 'Sistemas', 2: 'Suporte', 3: 'Segurança na nuvem' };
 
 /** Abertura de chamado em 3 passos: 1) contrato  2) descrição  3) revisar e enviar. */
 export function NovoChamado() {
@@ -63,7 +62,11 @@ export function NovoChamado() {
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: cor.fundo }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <BarraConexao />
       <ScrollView contentContainerStyle={{ padding: 16 }} keyboardShouldPersistTaps="handled">
-        <Text accessibilityLiveRegion="polite" style={{ fontSize: 15, fontWeight: '700', color: cor.primaria, marginBottom: 4 }}>Passo {passo} de 3</Text>
+        <View accessible accessibilityRole="progressbar" accessibilityLabel={`Passo ${passo} de 3`} accessibilityValue={{ min: 1, max: 3, now: passo }}
+          style={{ flexDirection: 'row', gap: 6, marginBottom: 10 }}>
+          {[1, 2, 3].map(n => <View key={n} style={{ flex: 1, height: 4, borderRadius: 4, backgroundColor: n <= passo ? paleta.azul : paleta.neutro200 }} />)}
+        </View>
+        <Text allowFontScaling accessibilityLiveRegion="polite" style={{ fontFamily: fonte.textoSemi, fontSize: 14, color: cor.primaria, marginBottom: 4 }}>Passo {passo} de 3</Text>
 
         {passo === 1 && (
           <>
@@ -82,9 +85,11 @@ export function NovoChamado() {
                     <Pressable key={c.id} accessibilityRole="radio" accessibilityState={{ selected: sel }}
                       accessibilityLabel={`Contrato ${c.numero}, ${TIPO[c.tipo]}, vale até ${formatarData(c.dataFim)}`}
                       onPress={() => setContratoId(c.id)}
-                      style={{ borderWidth: sel ? 4 : 2, borderColor: sel ? cor.primaria : cor.borda, borderRadius: 12, padding: 16, marginBottom: 10, minHeight: 64, backgroundColor: sel ? '#e8effc' : cor.fundo }}>
-                      <Text style={{ fontSize: 18, fontWeight: '700', color: cor.texto }}>{sel ? '✔ ' : ''}Contrato {c.numero}</Text>
-                      <Text style={{ fontSize: 15, color: cor.suave }}>{TIPO[c.tipo]} · vale até {formatarData(c.dataFim)}</Text>
+                      style={{ borderWidth: sel ? 2 : 1.5, borderColor: sel ? paleta.azul : paleta.neutro200, borderRadius: raio.lg, padding: 14, marginBottom: 10, minHeight: 64, gap: 6,
+                        backgroundColor: sel ? paleta.azul50 : paleta.branco }}>
+                      <TipoContrato tipo={c.tipo} />
+                      <Text allowFontScaling style={[tx.mono, { fontSize: 16 }]}>{sel ? '✔ ' : ''}{c.numero}</Text>
+                      <Text allowFontScaling style={tx.suave}>Vale até {formatarData(c.dataFim)}</Text>
                     </Pressable>
                   );
                 })}
@@ -97,6 +102,7 @@ export function NovoChamado() {
         {passo === 2 && (
           <>
             <Titulo>O que aconteceu?</Titulo>
+            {escolhido && <Aviso tom="ok">Contrato {escolhido.numero} ({TIPO[escolhido.tipo]}) ativo até {formatarData(escolhido.dataFim)}.</Aviso>}
             <Campo rotulo="Assunto" ajuda="Resuma o problema em poucas palavras." value={titulo} onChangeText={setTitulo} maxLength={200} erro={erroTitulo} />
             <Campo rotulo="Descrição (opcional)" ajuda="Conte mais detalhes, se quiser." value={descricao} onChangeText={setDescricao} maxLength={2000} multiline />
             <Botao rotulo="Continuar" onPress={proximo} />
@@ -108,12 +114,13 @@ export function NovoChamado() {
           <>
             <Titulo>Confira e envie</Titulo>
             <Cartao>
-              <Text style={{ color: cor.suave, fontWeight: '700' }}>Contrato</Text>
-              <Text style={{ fontSize: 17, color: cor.texto, marginBottom: 8 }}>{escolhido?.numero} · {escolhido ? TIPO[escolhido.tipo] : ''}</Text>
-              <Text style={{ color: cor.suave, fontWeight: '700' }}>Assunto</Text>
-              <Text style={{ fontSize: 17, color: cor.texto, marginBottom: 8 }}>{titulo.trim()}</Text>
-              <Text style={{ color: cor.suave, fontWeight: '700' }}>Descrição</Text>
-              <Text style={{ fontSize: 17, color: cor.texto }}>{descricao.trim() || 'Sem descrição.'}</Text>
+              <Text allowFontScaling style={[tx.suave, { fontFamily: fonte.textoSemi }]}>Contrato</Text>
+              <Text allowFontScaling style={[tx.mono, { fontSize: 16, marginBottom: 4 }]}>{escolhido?.numero}</Text>
+              {escolhido && <View style={{ marginBottom: 10 }}><TipoContrato tipo={escolhido.tipo} /></View>}
+              <Text allowFontScaling style={[tx.suave, { fontFamily: fonte.textoSemi }]}>Assunto</Text>
+              <Text allowFontScaling style={[tx.corpo, { marginBottom: 10 }]}>{titulo.trim()}</Text>
+              <Text allowFontScaling style={[tx.suave, { fontFamily: fonte.textoSemi }]}>Descrição</Text>
+              <Text allowFontScaling style={tx.corpo}>{descricao.trim() || 'Sem descrição.'}</Text>
             </Cartao>
             {!online && <Aviso>Sem internet: o chamado será guardado e enviado quando a conexão voltar.</Aviso>}
             <Botao rotulo={online ? 'Enviar chamado' : 'Guardar chamado'} onPress={enviar} carregando={enviando} />

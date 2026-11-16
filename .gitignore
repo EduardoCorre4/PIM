@@ -1,1 +1,5 @@
 .env
+credenciais.txt
+identidade-visual/
+*.tsbuildinfo
+*:Zone.Identifier

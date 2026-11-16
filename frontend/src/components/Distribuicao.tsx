@@ -1,4 +1,5 @@
 import type { ItemContagem } from '../api/types';
+import { rotuloMarca } from '../labels';
 
 /**
  * Lista de valores com barras. A barra é só reforço visual (aria-hidden); o número ao lado
@@ -8,13 +9,13 @@ export function Distribuicao({ titulo, itens, vazio = 'Sem dados no período.' }
   const max = Math.max(1, ...itens.map(i => i.total));
   const id = `d-${titulo.replace(/\W+/g, '-')}`;
   return (
-    <section className="cartao" aria-labelledby={id}>
+    <section className="jk-card" aria-labelledby={id}>
       <h2 id={id}>{titulo}</h2>
       {itens.length === 0 || itens.every(i => i.total === 0) ? <p>{vazio}</p> : (
         <dl className="lista-ind">
           {itens.map(i => (
             <div key={i.rotulo}>
-              <dt>{i.rotulo}</dt>
+              <dt>{rotuloMarca(i.rotulo)}</dt>
               <dd>
                 <strong>{i.total}</strong>
                 <span className="barra" aria-hidden="true"><span style={{ width: `${(i.total / max) * 100}%` }} /></span>
