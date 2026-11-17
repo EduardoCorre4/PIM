@@ -1,4 +1,3 @@
-// Textos em linguagem simples usados em toda a interface.
 export const PERFIL_CLIENTE = 1;
 export const PERFIL_FUNCIONARIO = 2;
 export const PERFIL_GERENTE = 3;
@@ -22,7 +21,6 @@ export const SITUACAO_CHAMADO: Record<number, string> = {
   3: 'Resolvido',
   4: 'Fechado',
 };
-// Chaves devolvidas pelo painel de indicadores -> texto exibido.
 export const NOME_INDICADOR: Record<string, string> = {
   Aberto: 'Aberto', EmAndamento: 'Em atendimento', Resolvido: 'Resolvido', Fechado: 'Fechado',
   Ativo: 'Ativo', Inativo: 'Inativo', Encerrado: 'Encerrado',

@@ -2,7 +2,7 @@ using Jake.Domain.Enums;
 
 namespace Jake.Domain.Entities;
 
-/// <summary>Chamado técnico vinculado a um Contrato e a um Cliente. A abertura é feita na Sprint 2 (sp_AbrirChamado).</summary>
+/// <summary>Chamado técnico vinculado a um Contrato e a um Cliente. Aberto via sp_AbrirChamado.</summary>
 public class Chamado
 {
     public int Id { get; set; }

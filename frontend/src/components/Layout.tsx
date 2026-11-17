@@ -24,7 +24,6 @@ export function BarraAcessibilidade() {
   );
 }
 
-/** Rodapé compacto das telas internas. */
 export function RodapeApp() {
   return (
     <footer className="jk-rodape-app">

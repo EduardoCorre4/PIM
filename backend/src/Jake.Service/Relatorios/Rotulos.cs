@@ -2,7 +2,6 @@ using Jake.Domain.Enums;
 
 namespace Jake.Service.Relatorios;
 
-/// <summary>Textos em português usados nos relatórios e no CSV.</summary>
 public static class Rotulos
 {
     public static string De(StatusChamado s) => s switch

@@ -88,7 +88,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     void sincronizar();
   }, [api, recarregar, sincronizar]);
 
-  // Abertura do app: retoma a sessão guardada.
   useEffect(() => {
     (async () => {
       const s = await sessionStore.load();

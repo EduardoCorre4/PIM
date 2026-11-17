@@ -1,4 +1,4 @@
-// Identidade visual JAKE Tecnologia (identidade-visual/tokens.css espelhado para React Native).
+// Mesmos tokens de frontend/src/styles/tokens.css, adaptados para React Native.
 export const paleta = {
   azul: '#2B4EEA',        // Azul JAKE — cor principal
   azul700: '#1F3BC4',

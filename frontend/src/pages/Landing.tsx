@@ -4,9 +4,7 @@ import { BarraAcessibilidade } from '../components/Layout';
 import { Logo } from '../components/Logo';
 import { usePageTitle } from '../components/usePageTitle';
 
-// Credenciais de demonstração. O Gerente vem do .env (SEED_GERENTE_*), repassado no build do Docker;
-// o cliente é o usuário de teste do banco local.
-// O Funcionário vem de SEED_FUNCIONARIO_* (padrão func@jake.local).
+// Contas de demonstração: Gerente e Funcionário vêm de SEED_* no .env (repassados no build do Docker).
 const GERENTE_EMAIL = import.meta.env.VITE_DEMO_GERENTE_EMAIL || 'definido em SEED_GERENTE_EMAIL (.env)';
 const FUNCIONARIO_EMAIL = import.meta.env.VITE_DEMO_FUNCIONARIO_EMAIL || 'func@jake.local';
 const FUNCIONARIO_SENHA = import.meta.env.VITE_DEMO_FUNCIONARIO_SENHA || 'Func@12345';
